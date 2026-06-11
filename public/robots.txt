@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://zeroapitools.vercel.app/sitemap.xml

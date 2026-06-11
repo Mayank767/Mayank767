@@ -1,0 +1,17 @@
+{
+  "name": "ZeroApiTools — Free Developer Tools",
+  "short_name": "ZeroApiTools",
+  "description": "65+ free developer tools that run 100% in your browser. No signup, no API, zero cost.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#08070f",
+  "theme_color": "#08070f",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' rx='24' fill='%2308070f'/><circle cx='60' cy='60' r='42' fill='none' stroke='%2300ffe0' stroke-width='3'/><text x='60' y='70' text-anchor='middle' font-family='sans-serif' font-size='32' font-weight='bold' fill='%2300ffe0'>ZA</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
