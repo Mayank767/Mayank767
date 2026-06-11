@@ -308,6 +308,40 @@ function App() {
             "priceCurrency": "USD"
           }
         });
+
+        // Breadcrumb Dynamic Schema Injection
+        let breadcrumbScript = document.getElementById('breadcrumb-schema');
+        if (!breadcrumbScript) {
+          breadcrumbScript = document.createElement('script');
+          breadcrumbScript.id = 'breadcrumb-schema';
+          breadcrumbScript.type = 'application/ld+json';
+          document.head.appendChild(breadcrumbScript);
+        }
+        const categoryMatch = CATEGORIES.find(c => c.id === tool.category) || { name: 'Tools' };
+        breadcrumbScript.textContent = JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://zeroapitools.vercel.app/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": categoryMatch.name,
+              "item": `https://zeroapitools.vercel.app/?cat=${tool.category}`
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": tool.name,
+              "item": `https://zeroapitools.vercel.app/${currentTool}`
+            }
+          ]
+        });
       }
     } else {
       window.history.pushState(null, '', '/');
