@@ -17,6 +17,14 @@ const uniqueIds = [...new Set(toolIds)].filter(id => id !== 'privacy-policy'); /
 
 const currentDate = new Date().toISOString();
 
+const blogFile = fs.readFileSync(path.join(__dirname, 'src', 'components', 'blog', 'BlogViews.jsx'), 'utf-8');
+const blogRegex = /slug:\s*'([^']+)'/g;
+const blogSlugs = [];
+let blogMatch;
+while ((blogMatch = blogRegex.exec(blogFile)) !== null) {
+  blogSlugs.push(blogMatch[1]);
+}
+
 let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml"
@@ -32,15 +40,34 @@ let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 
 uniqueIds.forEach(id => {
   sitemap += `  <url>
-    <loc>https://zeroapitools.vercel.app/\${id}</loc>
-    <lastmod>\${currentDate}</lastmod>
+    <loc>https://zeroapitools.vercel.app/${id}</loc>
+    <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://zeroapitools.vercel.app/\${id}" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://zeroapitools.vercel.app/${id}" />
+  </url>\n`;
+});
+
+// Also include blog post list
+sitemap += `  <url>
+    <loc>https://zeroapitools.vercel.app/blog</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://zeroapitools.vercel.app/blog" />
+  </url>\n`;
+
+blogSlugs.forEach(slug => {
+  sitemap += `  <url>
+    <loc>https://zeroapitools.vercel.app/blog-post/${slug}</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://zeroapitools.vercel.app/blog-post/${slug}" />
   </url>\n`;
 });
 
 sitemap += `</urlset>`;
 
 fs.writeFileSync(path.join(__dirname, 'public', 'sitemap.xml'), sitemap);
-console.log(`Generated sitemap with root + ${uniqueIds.length} tools.`);
+console.log(`Generated sitemap with root + ${uniqueIds.length} tools + 1 blog home + ${blogSlugs.length} blog posts.`);
