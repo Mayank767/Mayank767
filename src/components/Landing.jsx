@@ -209,6 +209,36 @@ export default function Landing() {
         <div className="trust-item">📡 <strong>No Tracking</strong> — No analytics on your input</div>
         <div className="trust-item">⚡ <strong>No Rate Limits</strong> — Use as much as you want</div>
       </section>
+
+      {/* ── SEO Content Section ── */}
+      <section className="seo-content" style={{ padding: '60px 20px', maxWidth: '800px', margin: '0 auto', color: 'var(--text-secondary)', lineHeight: '1.8' }}>
+        <h2 style={{ color: 'var(--text-heading)', marginBottom: '20px', fontSize: '2rem' }}>Your All-In-One Developer Utility Belt</h2>
+        <p style={{ marginBottom: '16px' }}>
+          Welcome to ZeroApiTools, the ultimate collection of <strong>free developer tools</strong> designed to run 100% locally in your browser. Whether you need a <strong>JSON formatter</strong>, a <strong>Base64 encoder</strong>, or a quick way to convert <strong>cURL to Fetch</strong>, we have you covered. Our platform ensures that your sensitive data never leaves your machine, providing unparalleled privacy and speed.
+        </p>
+        <h3 style={{ color: 'var(--text-heading)', marginTop: '30px', marginBottom: '15px', fontSize: '1.5rem' }}>Why Use Client-Side Developer Tools?</h3>
+        <p style={{ marginBottom: '16px' }}>
+          Traditional online tools often send your data to remote servers for processing. This means your proprietary code, private API keys, and sensitive JWT tokens could be logged, stored, or intercepted. ZeroApiTools changes the game by leveraging your browser's native capabilities. 
+        </p>
+        <ul style={{ paddingLeft: '20px', marginBottom: '16px' }}>
+          <li style={{ marginBottom: '8px' }}><strong>Instant Execution:</strong> No waiting for server requests. Format massive JSON files instantly.</li>
+          <li style={{ marginBottom: '8px' }}><strong>100% Privacy:</strong> Since everything is client-side, your data remains yours.</li>
+          <li style={{ marginBottom: '8px' }}><strong>Offline Access:</strong> Once loaded, our tools work even without an internet connection.</li>
+        </ul>
+        <h3 style={{ color: 'var(--text-heading)', marginTop: '30px', marginBottom: '15px', fontSize: '1.5rem' }}>Popular Tools & Examples</h3>
+        <p style={{ marginBottom: '16px' }}>
+          Developers rely on our platform daily for a variety of tasks. Here are some of our most popular utilities:
+        </p>
+        <ul style={{ paddingLeft: '20px', marginBottom: '16px' }}>
+          <li style={{ marginBottom: '8px' }}><strong>JSON Formatter & Validator:</strong> Paste minified JSON and instantly beautify it. Perfect for debugging API responses.</li>
+          <li style={{ marginBottom: '8px' }}><strong>Base64 Encode/Decode:</strong> Easily convert text or files to Base64 strings, essential for web development and data embedding.</li>
+          <li style={{ marginBottom: '8px' }}><strong>CSS Generators:</strong> Create stunning gradients, glassmorphism effects, and box shadows with our visual editors, then copy the CSS directly.</li>
+          <li style={{ marginBottom: '8px' }}><strong>JWT Decoder:</strong> Paste your JSON Web Tokens to safely read their payload and verify their expiration locally.</li>
+        </ul>
+        <p style={{ marginTop: '20px', padding: '15px', background: 'rgba(0, 255, 224, 0.05)', borderRadius: '8px', border: '1px solid rgba(0, 255, 224, 0.2)' }}>
+          📚 <strong>Want to learn more?</strong> <a href="/blog-post/complete-guide-json-formatting" onClick={(e) => { e.preventDefault(); selectTool('blog-post/complete-guide-json-formatting'); window.scrollTo(0,0); }} style={{ color: '#00ffe0', textDecoration: 'none', fontWeight: 'bold' }}>Check out our Complete Guide to JSON Formatting and Validation</a> to see how our tools can save you hours of debugging time.
+        </p>
+      </section>
     </div>
   );
 }
