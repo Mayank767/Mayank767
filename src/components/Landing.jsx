@@ -245,38 +245,53 @@ export default function Landing() {
         <h2 id="faq-heading" style={{ color: 'var(--text-heading)', marginBottom: '30px', fontSize: '2rem' }}>Frequently Asked Questions</h2>
 
         <div className="faq-item" style={{ marginBottom: '20px', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
-          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.2rem' }}>What is ZeroApiTools?</h3>
-          <p>ZeroApiTools is a free collection of 65+ developer tools — including a Base64 encoder/decoder, JSON formatter, image compressor, CSS generators, regex tester, cURL-to-fetch converter, JWT decoder, hash generator, and more — that all run 100% in your browser.</p>
+          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.1rem' }}>How do I format or beautify JSON online for free?</h3>
+          <p>Paste your raw or minified JSON into ZeroApiTools' free <a href="/json-formatter" onClick={(e) => { e.preventDefault(); selectTool('json-formatter'); window.scrollTo(0,0); }} style={{ color: '#00ffe0' }}>JSON Formatter & Beautifier</a>. It instantly indents, validates, and highlights your JSON — no signup, no server upload. Everything runs locally in your browser.</p>
         </div>
 
         <div className="faq-item" style={{ marginBottom: '20px', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
-          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.2rem' }}>Is ZeroApiTools free to use?</h3>
-          <p>Yes. All tools are completely free, with no signup, no account, and no usage limits.</p>
+          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.1rem' }}>How do I encode or decode Base64 online?</h3>
+          <p>Use the free <a href="/base64" onClick={(e) => { e.preventDefault(); selectTool('base64'); window.scrollTo(0,0); }} style={{ color: '#00ffe0' }}>Base64 Encoder/Decoder</a> on ZeroApiTools. Just paste your text to get the Base64 string instantly — or paste a Base64 string to decode it back. No data is ever sent to a server.</p>
         </div>
 
         <div className="faq-item" style={{ marginBottom: '20px', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
-          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.2rem' }}>Does ZeroApiTools store or upload my data?</h3>
-          <p>No. Every tool runs entirely client-side in your browser. Your files and data are never uploaded to a server or stored anywhere — everything happens locally on your device.</p>
+          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.1rem' }}>How do I decode a JWT token online? (JWT token kaise decode kare?)</h3>
+          <p>Open the <a href="/jwt-decoder" onClick={(e) => { e.preventDefault(); selectTool('jwt-decoder'); window.scrollTo(0,0); }} style={{ color: '#00ffe0' }}>JWT Decoder</a> on ZeroApiTools, paste your token, and instantly see the header, payload, and expiry. Since decoding happens 100% in your browser, your production tokens remain completely private.</p>
         </div>
 
         <div className="faq-item" style={{ marginBottom: '20px', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
-          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.2rem' }}>Do I need an API key to use these tools?</h3>
-          <p>No. ZeroApiTools is designed to work without any API calls or external dependencies, so there's nothing to configure and no keys required.</p>
+          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.1rem' }}>What is the best free regex tester online for beginners?</h3>
+          <p>ZeroApiTools' <a href="/regex-tester" onClick={(e) => { e.preventDefault(); selectTool('regex-tester'); window.scrollTo(0,0); }} style={{ color: '#00ffe0' }}>Regex Tester</a> shows live match highlighting as you type your pattern, making it ideal for beginners and pros alike. It supports all standard JS regex flags and runs entirely client-side.</p>
         </div>
 
         <div className="faq-item" style={{ marginBottom: '20px', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
-          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.2rem' }}>What kind of tools are available on ZeroApiTools?</h3>
-          <p>ZeroApiTools includes utilities for encoding/decoding (Base64, URL, JWT), formatting (JSON, SQL, Markdown), image processing (compression, conversion), CSS helpers (generators, specificity calculator), developer calculators (chmod, cron parser), and converters (cURL to fetch, hex to RGB), among 65+ total tools.</p>
+          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.1rem' }}>How do I compress an image online for free without uploading it to a server?</h3>
+          <p>ZeroApiTools' <a href="/image-compress" onClick={(e) => { e.preventDefault(); selectTool('image-compress'); window.scrollTo(0,0); }} style={{ color: '#00ffe0' }}>Image Compressor</a> reduces image file sizes using your browser's native APIs — your photos never leave your device. Supports JPEG, PNG, and WebP output with no quality compromise.</p>
         </div>
 
         <div className="faq-item" style={{ marginBottom: '20px', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
-          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.2rem' }}>Can I use ZeroApiTools offline?</h3>
-          <p>Since the tools run client-side in your browser, many work without an active internet connection once the page has loaded, making them useful for offline development workflows.</p>
+          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.1rem' }}>Is there a free CSS generator and box shadow generator online?</h3>
+          <p>Yes — ZeroApiTools has a full suite of free CSS generators including a <a href="/gradient" onClick={(e) => { e.preventDefault(); selectTool('gradient'); window.scrollTo(0,0); }} style={{ color: '#00ffe0' }}>CSS Gradient Generator</a>, <a href="/box-shadow" onClick={(e) => { e.preventDefault(); selectTool('box-shadow'); window.scrollTo(0,0); }} style={{ color: '#00ffe0' }}>Box Shadow Generator</a>, Glassmorphism Generator, and Border Radius tool. All free, all visual, all copy-paste ready.</p>
         </div>
 
         <div className="faq-item" style={{ marginBottom: '20px', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
-          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.2rem' }}>Do I need to create an account to use ZeroApiTools?</h3>
-          <p>No signup or account creation is required. Just visit the site and start using any tool immediately.</p>
+          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.1rem' }}>How do I convert a cURL command to JavaScript fetch or Axios online?</h3>
+          <p>Use ZeroApiTools' free <a href="/curl-to-fetch" onClick={(e) => { e.preventDefault(); selectTool('curl-to-fetch'); window.scrollTo(0,0); }} style={{ color: '#00ffe0' }}>cURL to Fetch Converter</a>. Paste your cURL command and get the equivalent JavaScript fetch() or Axios code instantly — perfect for API testing and frontend development.</p>
+        </div>
+
+        <div className="faq-item" style={{ marginBottom: '20px', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
+          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.1rem' }}>How do I calculate Linux file permissions (chmod) online?</h3>
+          <p>ZeroApiTools' <a href="/chmod-calc" onClick={(e) => { e.preventDefault(); selectTool('chmod-calc'); window.scrollTo(0,0); }} style={{ color: '#00ffe0' }}>Chmod Calculator</a> lets you toggle read/write/execute permissions visually for Owner, Group, and Others — and instantly shows the numeric chmod value (like 755 or 644). No Linux knowledge required.</p>
+        </div>
+
+        <div className="faq-item" style={{ marginBottom: '20px', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
+          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.1rem' }}>Is ZeroApiTools safe? Does it store or upload my data?</h3>
+          <p>ZeroApiTools is 100% client-side — every single tool runs in your browser using JavaScript. No data is ever uploaded to a server, stored, or logged anywhere. It's the safest way to use developer tools online, especially for sensitive payloads like JWTs, API keys, and database dumps.</p>
+        </div>
+
+        <div className="faq-item" style={{ marginBottom: '20px', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
+          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.1rem' }}>How does ZeroApiTools compare to paid developer tools?</h3>
+          <p>ZeroApiTools offers 65+ tools completely free with no account, no rate limits, and no data upload — features that many paid tools charge for. The key advantage is that everything processes locally in your browser rather than on a remote cloud server, giving you both speed and privacy.</p>
         </div>
       </section>
     </div>
