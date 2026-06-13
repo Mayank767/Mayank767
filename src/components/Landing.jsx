@@ -239,6 +239,46 @@ export default function Landing() {
           📚 <strong>Want to learn more?</strong> <a href="/blog-post/complete-guide-json-formatting" onClick={(e) => { e.preventDefault(); selectTool('blog-post/complete-guide-json-formatting'); window.scrollTo(0,0); }} style={{ color: '#00ffe0', textDecoration: 'none', fontWeight: 'bold' }}>Check out our Complete Guide to JSON Formatting and Validation</a> to see how our tools can save you hours of debugging time.
         </p>
       </section>
+
+      {/* ── FAQ Section ── */}
+      <section className="seo-content" id="faq" aria-labelledby="faq-heading" style={{ padding: '0 20px 60px', maxWidth: '800px', margin: '0 auto', color: 'var(--text-secondary)', lineHeight: '1.8' }}>
+        <h2 id="faq-heading" style={{ color: 'var(--text-heading)', marginBottom: '30px', fontSize: '2rem' }}>Frequently Asked Questions</h2>
+
+        <div className="faq-item" style={{ marginBottom: '20px', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
+          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.2rem' }}>What is ZeroApiTools?</h3>
+          <p>ZeroApiTools is a free collection of 65+ developer tools — including a Base64 encoder/decoder, JSON formatter, image compressor, CSS generators, regex tester, cURL-to-fetch converter, JWT decoder, hash generator, and more — that all run 100% in your browser.</p>
+        </div>
+
+        <div className="faq-item" style={{ marginBottom: '20px', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
+          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.2rem' }}>Is ZeroApiTools free to use?</h3>
+          <p>Yes. All tools are completely free, with no signup, no account, and no usage limits.</p>
+        </div>
+
+        <div className="faq-item" style={{ marginBottom: '20px', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
+          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.2rem' }}>Does ZeroApiTools store or upload my data?</h3>
+          <p>No. Every tool runs entirely client-side in your browser. Your files and data are never uploaded to a server or stored anywhere — everything happens locally on your device.</p>
+        </div>
+
+        <div className="faq-item" style={{ marginBottom: '20px', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
+          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.2rem' }}>Do I need an API key to use these tools?</h3>
+          <p>No. ZeroApiTools is designed to work without any API calls or external dependencies, so there's nothing to configure and no keys required.</p>
+        </div>
+
+        <div className="faq-item" style={{ marginBottom: '20px', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
+          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.2rem' }}>What kind of tools are available on ZeroApiTools?</h3>
+          <p>ZeroApiTools includes utilities for encoding/decoding (Base64, URL, JWT), formatting (JSON, SQL, Markdown), image processing (compression, conversion), CSS helpers (generators, specificity calculator), developer calculators (chmod, cron parser), and converters (cURL to fetch, hex to RGB), among 65+ total tools.</p>
+        </div>
+
+        <div className="faq-item" style={{ marginBottom: '20px', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
+          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.2rem' }}>Can I use ZeroApiTools offline?</h3>
+          <p>Since the tools run client-side in your browser, many work without an active internet connection once the page has loaded, making them useful for offline development workflows.</p>
+        </div>
+
+        <div className="faq-item" style={{ marginBottom: '20px', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
+          <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.2rem' }}>Do I need to create an account to use ZeroApiTools?</h3>
+          <p>No signup or account creation is required. Just visit the site and start using any tool immediately.</p>
+        </div>
+      </section>
     </div>
   );
 }
