@@ -79,6 +79,98 @@ const TOOL_FAQS = {
     { q: 'What is an HTML Entity?', a: 'HTML entities are used to display reserved characters (like <, >, &) or invisible characters in HTML. They start with an ampersand (&) and end with a semicolon (;).' },
     { q: 'How does the converter work?', a: 'It replaces special characters with their corresponding HTML entities for encode, and vice versa for decode. All processing happens locally in your browser.' },
   ],
+
+  // ── Keyword-targeted FAQs for AnswerThePublic "Not Covered" tools ──
+  'regex-tester': [
+    { q: 'What is a regex tester online?', a: 'A regex tester online (regular expression tester) lets you write a pattern and test it against any text in real time, showing live match highlights and capture groups — right in your browser.' },
+    { q: 'Is this regex tester free for beginners?', a: 'Yes! ZeroApiTools\' Regex Tester is 100% free with no signup. It\'s designed for beginners with live highlighting and flag toggles, but powerful enough for experienced developers.' },
+    { q: 'What regex engine does this tester use?', a: 'It uses JavaScript\'s built-in RegExp engine — perfect for testing patterns for frontend validation, Node.js scripts, and browser-based string matching.' },
+    { q: 'Is my test data uploaded to a server?', a: 'No. Everything runs entirely in your browser. Your regex patterns and test strings are never sent anywhere.' },
+  ],
+
+  'gradient': [
+    { q: 'What is a CSS generator online?', a: 'A CSS generator online is a visual tool that lets you configure CSS properties (like gradients, shadows, or flexbox) through sliders and pickers, then generates the copy-paste CSS code for you.' },
+    { q: 'Is this CSS gradient generator free?', a: 'Yes — completely free, no signup. ZeroApiTools also includes a CSS Box Shadow Generator, Flexbox Generator, Border Radius Generator, and Glassmorphism Generator, all free.' },
+    { q: 'Does the generated CSS work in all browsers?', a: 'Yes. The generated gradient CSS includes standard syntax that works in all modern browsers including Chrome, Firefox, Safari, and Edge.' },
+    { q: 'Can I use this for Tailwind CSS?', a: 'Yes. The generated standard CSS can be adapted into Tailwind\'s arbitrary value syntax, e.g., `bg-[linear-gradient(to_right,#f00,#00f)]`.' },
+  ],
+
+  'curl-to-fetch': [
+    { q: 'What is a cURL converter online?', a: 'A cURL converter online parses a cURL terminal command and converts it into equivalent JavaScript fetch(), Axios, or other HTTP library code — saving you time when working with API documentation.' },
+    { q: 'How do I convert cURL to JavaScript?', a: 'Paste your cURL command into ZeroApiTools\' free cURL to JavaScript converter and get the equivalent fetch() or Axios code instantly. No signup, no upload.' },
+    { q: 'What cURL flags are supported?', a: 'The converter supports -X (method), -H (headers), -d/--data (body), --user (Basic Auth), -b (cookies), and most common cURL options used in API testing.' },
+    { q: 'Is my API data safe when using this converter?', a: 'Yes. The conversion happens entirely in your browser using JavaScript. Your cURL commands, headers, and API keys never leave your device.' },
+  ],
+
+  'html-beautifier': [
+    { q: 'What is an HTML formatter online?', a: 'An HTML formatter (HTML beautifier) takes minified or poorly indented HTML and adds correct indentation and line breaks, making the DOM structure clear and readable.' },
+    { q: 'Is this HTML formatter free with no upload?', a: 'Yes. ZeroApiTools\' HTML Formatter is completely free and runs 100% in your browser. Your HTML code is never uploaded to any server.' },
+    { q: 'Can I also minify HTML with this tool?', a: 'Yes! The tool works both ways — click Minify to remove all whitespace and produce a compact, production-ready HTML string.' },
+    { q: 'What is the difference between an HTML formatter and a validator?', a: 'An HTML formatter adds indentation and improves readability. An HTML validator checks whether your markup is standards-compliant (proper tags, attributes, nesting). This tool focuses on formatting.' },
+  ],
+
+  'chmod-calc': [
+    { q: 'What is a chmod calculator in Linux?', a: 'A chmod calculator helps you compute Linux file permission values visually — you check read/write/execute for Owner, Group, and Others, and instantly get the numeric value (like 755 or 644) for the chmod command.' },
+    { q: 'What does chmod 755 mean?', a: 'chmod 755 means the Owner has full read+write+execute permissions (7), while Group and Others have read+execute only (5). It\'s the standard permission for web server scripts and public directories.' },
+    { q: 'What does chmod 644 mean?', a: 'chmod 644 gives the Owner read+write access (6) and Group/Others read-only access (4). It\'s the standard for web files like HTML, CSS, and images that should not be executed.' },
+    { q: 'Is this Linux file permission calculator free?', a: 'Yes — completely free, no signup. Toggle permissions visually and instantly get the numeric chmod value and symbolic notation. Runs 100% in your browser.' },
+  ],
+
+  'markdown-preview': [
+    { q: 'What is a Markdown editor online?', a: 'A Markdown editor online is a split-pane tool where you write Markdown syntax on the left (like # Heading, **bold**, - list) and see the rendered HTML output on the right, updated live as you type.' },
+    { q: 'Is this Markdown editor free?', a: 'Yes — 100% free, no signup, no upload. ZeroApiTools\' Markdown Editor runs entirely in your browser and supports all standard CommonMark syntax.' },
+    { q: 'Can I use this as a free README editor?', a: 'Absolutely. This is the perfect tool for writing GitHub README.md files — write your Markdown and preview exactly how it will render before you commit.' },
+    { q: 'What Markdown syntax is supported?', a: 'All standard CommonMark Markdown: headings (#), bold (**), italic (*), links, images, ordered/unordered lists, blockquotes, fenced code blocks (```), and tables.' },
+  ],
+
+  'password-gen': [
+    { q: 'Is this password generator secure?', a: 'Yes. Passwords are generated using your browser\'s cryptographic crypto.getRandomValues() API — the most secure source of randomness available in a browser. No password is ever sent to a server.' },
+    { q: 'How long should a strong password be?', a: 'Security experts recommend at least 16 characters combining uppercase, lowercase, numbers, and symbols. For critical accounts like banking or email, use 24+ characters.' },
+    { q: 'Are generated passwords stored anywhere?', a: 'No. Password generation is 100% local. Your passwords are never stored, logged, or transmitted. They exist only in your browser tab and are gone when you close it.' },
+    { q: 'Is this password generator free with no signup?', a: 'Yes — completely free, no account, no limits. Generate unlimited strong passwords directly in your browser.' },
+  ],
+
+  'js-beautifier': [
+    { q: 'What is a code beautifier online?', a: 'A code beautifier (code formatter) takes minified or messy source code and reformats it with consistent indentation, line breaks, and spacing — making it readable and maintainable.' },
+    { q: 'What is the difference between a code beautifier and a code minifier?', a: 'A beautifier expands code with whitespace and indentation for readability. A minifier removes all unnecessary characters to shrink file size for production performance. This tool does both.' },
+    { q: 'Does this JS beautifier upload my code?', a: 'No. All formatting and minification runs in your browser using JavaScript. Your code never leaves your device — especially important for proprietary or sensitive code.' },
+    { q: 'Is this JavaScript code beautifier free?', a: 'Yes — 100% free, no signup. Paste any JavaScript code and instantly beautify or minify it in one click.' },
+  ],
+
+  'diff-checker': [
+    { q: 'What is a text diff checker online?', a: 'A text diff checker compares two blocks of text line-by-line and highlights exactly what changed — additions in green, deletions in red. It\'s essential for code reviews, config comparisons, and catching subtle changes.' },
+    { q: 'Is this text diff checker free and private?', a: 'Yes — completely free and 100% private. The comparison runs entirely in your browser. Your text is never sent to any server or stored.' },
+    { q: 'Can I compare code files with this tool?', a: 'Yes. It works for any plain text — JavaScript, HTML, CSS, JSON, YAML, SQL, or prose. Just paste the contents of two files to see what changed.' },
+    { q: 'Does this diff checker show line numbers?', a: 'Yes. The diff output shows line-by-line comparison with clear visual distinction between unchanged lines, added lines (green), and removed lines (red).' },
+  ],
+
+  'flexbox': [
+    { q: 'What is a CSS Flexbox generator online?', a: 'A CSS Flexbox generator is a visual playground where you click flex container properties like justify-content, align-items, and flex-direction, see items rearrange live, and copy the generated CSS instantly.' },
+    { q: 'Is this Flexbox generator free?', a: 'Yes — 100% free, no signup. The Flexbox Playground runs entirely in your browser with no limits.' },
+    { q: 'What is the difference between justify-content and align-items?', a: 'justify-content aligns items along the main axis (horizontal for row). align-items aligns along the cross axis (vertical for row). Use the playground to see the visual difference instantly.' },
+    { q: 'Can I learn Flexbox with this tool?', a: 'Absolutely — it\'s one of the best free tools to learn CSS Flexbox visually. Click each property value and watch the child elements move in real time to understand exactly what each property does.' },
+  ],
+
+  'uuid': [
+    { q: 'What is a UUID generator online?', a: 'A UUID generator creates random, RFC 4122-compliant Version 4 UUIDs (Universally Unique Identifiers) — 128-bit identifiers used as database primary keys, session tokens, and file names.' },
+    { q: 'Is a UUID the same as a GUID?', a: 'Yes. GUID (Globally Unique Identifier) is Microsoft\'s term for UUID. They follow the same standard and are fully interchangeable in format and usage.' },
+    { q: 'Are generated UUIDs truly unique?', a: 'Version 4 UUIDs use 122 bits of randomness. The probability of a collision is 1 in 5.3×10³⁶ — effectively zero. Every generated UUID can be safely treated as globally unique.' },
+    { q: 'Is this UUID generator free with no signup?', a: 'Yes — 100% free. Generate 1 to 100 UUIDs at once in standard, no-hyphen, or uppercase formats. Runs entirely in your browser.' },
+  ],
+
+  'cron-parser': [
+    { q: 'What is a cron expression generator online?', a: 'A cron expression generator/parser translates 5-field cron syntax (like 0 9 * * 1-5) into plain English (e.g., "Every weekday at 9:00 AM") and shows upcoming execution times.' },
+    { q: 'What does * * * * * mean in cron?', a: '* * * * * means "every minute". The five fields are: Minute (0-59), Hour (0-23), Day of Month (1-31), Month (1-12), Day of Week (0-7). An asterisk (*) means "every" for that field.' },
+    { q: 'What is the difference between 0 * * * * and */5 * * * *?', a: '0 * * * * runs once per hour at minute 0. */5 * * * * runs every 5 minutes. The / operator means "every N units" — so */5 means "every 5th minute".' },
+    { q: 'Is this cron expression parser free?', a: 'Yes — 100% free, no signup. Parse and generate cron expressions instantly in your browser with plain English translation and next-run timestamps.' },
+  ],
+
+  'css-beautifier': [
+    { q: 'What is a CSS beautifier online?', a: 'A CSS beautifier (CSS formatter) takes minified or unstructured CSS and adds proper indentation, line breaks between properties, and consistent formatting — making stylesheets readable and maintainable.' },
+    { q: 'Is this CSS code minifier free?', a: 'Yes — 100% free, no signup. This tool works both as a CSS beautifier and CSS minifier. Minify mode removes all whitespace to reduce file size for production.' },
+    { q: 'Does this CSS beautifier upload my code?', a: 'No. All formatting happens in your browser. Your CSS code is never uploaded to any server — safe for proprietary stylesheets.' },
+    { q: 'Can I use this to format SCSS or Sass?', a: 'This tool is optimized for standard CSS. For SCSS/Sass, the beautification may work partially since SCSS is a superset of CSS, but nested rules may not format perfectly.' },
+  ],
 };
 
 // Generic FAQs for tools without specific FAQs
