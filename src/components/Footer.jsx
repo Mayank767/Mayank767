@@ -1,23 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useApp, TOOLS } from '../App';
 
 
 export default function Footer() {
   const { selectTool } = useApp();
-  const [feedbackSent, setFeedbackSent] = useState(false);
-  const [feedbackVal, setFeedbackVal] = useState('');
-
-  const handleFeedback = (e) => {
-    e.preventDefault();
-    if (feedbackVal.trim()) {
-      // Open mailto so the suggestion actually reaches us
-      const subject = encodeURIComponent('ZeroApiTools Tool Suggestion');
-      const body = encodeURIComponent(`Tool Suggestion: ${feedbackVal}`);
-      window.open(`mailto:feedback@webutils.app?subject=${subject}&body=${body}`);
-      setFeedbackSent(true);
-      setFeedbackVal('');
-    }
-  };
 
   return (
     <footer className="footer-new">
@@ -45,26 +31,6 @@ export default function Footer() {
               <span className="footer-badge">🚫 No Signup</span>
               <span className="footer-badge">📡 No Tracking</span>
             </div>
-          </div>
-
-          {/* Feedback box */}
-          <div className="footer-feedback">
-            <div className="footer-feedback-title">💬 Got a suggestion?</div>
-            <div className="footer-feedback-sub">Tell us what tool you want next</div>
-            {feedbackSent ? (
-              <div className="footer-feedback-thanks">✅ Thanks! We'll consider it.</div>
-            ) : (
-              <form className="footer-feedback-form" onSubmit={handleFeedback}>
-                <input
-                  className="footer-feedback-input"
-                  placeholder="e.g. TOML converter, JWT builder..."
-                  value={feedbackVal}
-                  onChange={e => setFeedbackVal(e.target.value)}
-                  maxLength={120}
-                />
-                <button className="footer-feedback-btn" type="submit">Send →</button>
-              </form>
-            )}
           </div>
 
           {/* Why ZeroApiTools section */}

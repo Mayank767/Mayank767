@@ -15,7 +15,8 @@ while ((match = regex.exec(appFile)) !== null) {
 // Ensure unique IDs
 const uniqueIds = [...new Set(toolIds)].filter(id => id !== 'privacy-policy'); // We will add privacy policy, wait why not? Yes include it!
 
-const currentDate = new Date().toISOString();
+const now = new Date();
+const currentDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 
 const blogFile = fs.readFileSync(path.join(__dirname, 'src', 'components', 'blog', 'BlogViews.jsx'), 'utf-8');
 const blogRegex = /slug:\s*'([^']+)'/g;
@@ -31,7 +32,7 @@ let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://zeroapitools.vercel.app/</loc>
-    <lastmod>\${currentDate}</lastmod>
+    <lastmod>${currentDate}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://zeroapitools.vercel.app/" />

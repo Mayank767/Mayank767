@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import fs from 'fs'
+import { TOOL_FAQS, GENERIC_FAQS } from './src/data/faqs.js'
 
 // ─────────────────────────────────────────────────────────
 // Extract tool data from App.jsx at config-load time
@@ -50,11 +51,19 @@ function prerenderRoutes() {
           return
         }
 
+        // ── Load toolHowTo.json for rich content injection ──
+        const toolHowToPath = path.resolve(__dirname, 'src/data/toolHowTo.json')
+        let toolHowToData = {}
+        if (fs.existsSync(toolHowToPath)) {
+          toolHowToData = JSON.parse(fs.readFileSync(toolHowToPath, 'utf-8'))
+        }
+
+        const currentYear = new Date().getFullYear()
         const baseHtml = fs.readFileSync(indexPath, 'utf-8')
         let created = 0
 
         for (const tool of tools) {
-          const title = `${tool.name} — Free Online Tool | ZeroApiTools`
+          const title = `${tool.name} — Free Online Tool (${currentYear}) | ZeroApiTools`
           const desc = tool.desc.replace(/\.+$/, '')
           const keywords = categoryKeywords[tool.category] || ''
           const description = `${desc}. ${keywords}. 100% free, works offline in your browser. No signup, no API, no data uploaded. ZeroApiTools.`
@@ -108,6 +117,58 @@ function prerenderRoutes() {
             ]
           })
 
+          // ── Extract HowTo steps from toolHowTo markdown ──
+          let howToLd = ''
+          const howToMarkdown = toolHowToData[tool.id] || ''
+          if (howToMarkdown) {
+            // Parse numbered steps like "1. Do something" from the "How to Use" section
+            const stepsMatch = howToMarkdown.match(/## How to Use[^\n]*\n[\s\S]*?(?=\n##|\n###|$)/)
+            if (stepsMatch) {
+              const stepLines = stepsMatch[0].match(/^\d+\.\s+(.+)$/gm)
+              if (stepLines && stepLines.length > 0) {
+                const steps = stepLines.map((line, i) => ({
+                  "@type": "HowToStep",
+                  "position": i + 1,
+                  "name": line.replace(/^\d+\.\s+/, '').trim(),
+                  "text": line.replace(/^\d+\.\s+/, '').trim(),
+                  "url": `${url}#step-${i + 1}`
+                }))
+                howToLd = JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "HowTo",
+                  "name": `How to use ${tool.name} online`,
+                  "description": `Step-by-step guide to use the free ${tool.name} tool on ZeroApiTools.`,
+                  "totalTime": "PT1M",
+                  "tool": { "@type": "HowToTool", "name": "Web Browser" },
+                  "step": steps
+                })
+              }
+            }
+          }
+
+          // ── Convert toolHowTo markdown to simple HTML for static shell ──
+          let howToHtml = ''
+          if (howToMarkdown) {
+            howToHtml = howToMarkdown
+              // H1
+              .replace(/^# (.+)$/gm, '')  // Skip H1, we already have it
+              // H2
+              .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+              // H3
+              .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+              // Numbered list items
+              .replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>')
+              // Bold
+              .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+              // Paragraphs (lines that aren't tags)
+              .replace(/^(?!<[hlo]|$)(.+)$/gm, '<p>$1</p>')
+              // Wrap consecutive <li> in <ol>
+              .replace(/(<li>[\s\S]*?<\/li>\n?)+/g, '<ol>$&</ol>')
+              // Clean up empty lines
+              .replace(/\n{2,}/g, '\n')
+              .trim()
+          }
+
           // ── SEO-rich H1 + paragraph for the loading shell ──
           const h1Text = `${tool.name} — Free Online ${tool.category === 'calculator' ? 'Calculator' : tool.category === 'pdf' ? 'PDF Tool' : 'Tool'}`
           const shellParagraph = `Use ${tool.name} for free — ${desc.toLowerCase()}. ` +
@@ -157,34 +218,52 @@ function prerenderRoutes() {
               /<meta\s+name="twitter:url"\s+content="[^"]*"\s*\/?>/,
               `<meta name="twitter:url" content="${url}" />`
             )
-            // ── Replace generic JSON-LD with tool-specific schemas ──
+            // ── Replace generic JSON-LD with tool-specific schemas + HowTo ──
             .replace(
               /<script type="application\/ld\+json" id="geo-schema">[\s\S]*?<\/script>/,
-              `<script type="application/ld+json" id="geo-schema">${jsonLd}</script>\n    <script type="application/ld+json">${breadcrumbLd}</script>`
+              `<script type="application/ld+json" id="geo-schema">${jsonLd}</script>\n    <script type="application/ld+json">${breadcrumbLd}</script>${howToLd ? `\n    <script type="application/ld+json">${howToLd}</script>` : ''}`
+            )
+            // ── Replace Meta Keywords ──
+            .replace(
+              /<meta\s+name="keywords"\s+content="[^"]*"\s*\/?>/,
+              `<meta name="keywords" content="${tool.name.toLowerCase()}, free ${tool.name.toLowerCase()} online, ${keywords}, zeroapitools" />`
+            )
+            // ── Replace FAQ Schema ──
+            .replace(
+              /<script type="application\/ld\+json">\s*\{\s*"@context":\s*"https:\/\/schema\.org",\s*"@type":\s*"FAQPage"[\s\S]*?<\/script>/,
+              `<script type="application/ld+json">\n${JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": (TOOL_FAQS[tool.id] || GENERIC_FAQS).map(f => ({
+                  "@type": "Question",
+                  "name": f.q,
+                  "acceptedAnswer": { "@type": "Answer", "text": f.a }
+                }))
+              })}\n    </script>`
             )
             // ── Replace H1 tag ──
             .replace(
               /<h1>[^<]*<\/h1>/,
               `<h1>${h1Text}</h1>`
             )
-            // ── Replace shell paragraph with keyword-rich content ──
+            // ── Replace shell paragraph with keyword-rich content + toolHowTo HTML ──
             .replace(
               /<p>\s*ZeroApiTools provides 65\+[\s\S]*?<\/p>/,
-              `<p>${shellParagraph}</p>`
+              `<p>${shellParagraph}</p>${howToHtml ? `\n<article class="seo-content" style="text-align:left;max-width:800px;margin:0 auto;padding:20px;color:#94a3b8;font-size:0.95rem;line-height:1.7;">${howToHtml}</article>` : ''}`
             )
 
-          // Write to dist/<tool-id>/index.html
-          const toolDir = path.join(distDir, tool.id)
-          fs.mkdirSync(toolDir, { recursive: true })
-          fs.writeFileSync(path.join(toolDir, 'index.html'), html, 'utf-8')
+          // Write to dist/<tool-id>.html
+          const toolPath = path.join(distDir, `${tool.id}.html`)
+          fs.writeFileSync(toolPath, html, 'utf-8')
           created++
         }
 
-        console.log(`\n✅ [prerender] Generated ${created} static HTML pages with H1 + JSON-LD + keyword-rich descriptions.\n`)
+        console.log(`\n✅ [prerender] Generated ${created} static HTML pages with H1 + JSON-LD + HowTo schema + full SEO content.\n`)
       }
     }
   }
 }
+
 
 // ─────────────────────────────────────────────────────────
 // Vite config

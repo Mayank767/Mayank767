@@ -54,7 +54,6 @@ const ImageToBase64 = React.lazy(() => import('./components/image/ImageToBase64'
 const QrCodeGenerator = React.lazy(() => import('./components/image/QrCodeGenerator'));
 const PlaceholderImageGen = React.lazy(() => import('./components/image/PlaceholderImageGen'));
 const ImageFormatConverter = React.lazy(() => import('./components/image/ImageFormatConverter'));
-const BackgroundRemover = React.lazy(() => import('./components/image/BackgroundRemover'));
 
 // Security
 const PasswordGenerator = React.lazy(() => import('./components/security/PasswordGenerator'));
@@ -176,7 +175,6 @@ export const TOOLS = [
 
   // Image (new)
   { id: 'image-format', name: 'Image Format Converter', desc: 'Convert images between JPEG, PNG, WebP formats', seoTitle: 'Image Format Converter Online Free | ZeroApiTools', seoDesc: 'Convert images between JPEG, PNG, WebP formats. Free online tool, no signup required, works in browser. | ZeroApiTools', icon: '🔀', category: 'image', component: ImageFormatConverter },
-  { id: 'bg-remover', name: 'Background Remover', desc: 'Remove image background with color-based eraser', seoTitle: 'Background Remover Online Free | ZeroApiTools', seoDesc: 'Remove image background with color-based eraser. Free online tool, no signup required, works in browser. | ZeroApiTools', icon: '✂️', category: 'image', component: BackgroundRemover },
 
   // SEO (new)
   { id: 'utm-builder', name: 'UTM Link Builder', desc: 'Build UTM tracking links for Google Analytics', seoTitle: 'UTM Link Builder Online Free | ZeroApiTools', seoDesc: 'Build UTM tracking links for Google Analytics. Free online tool, no signup required, works in browser. | ZeroApiTools', icon: '📊', category: 'seo', component: UtmBuilder },
@@ -345,9 +343,9 @@ function App() {
       }
     } else {
       window.history.pushState(null, '', '/');
-      document.title = 'ZeroApiTools - 65+ Free Developer Tools';
+      document.title = `ZeroApiTools — 65+ Free Developer Tools (${new Date().getFullYear()})`;
       const metaDesc = document.querySelector('meta[name="description"]');
-      if (metaDesc) metaDesc.content = '65+ free developer tools that run 100% in your browser. Base64, JSON formatter, image compressor, CSS generators, regex tester, cURL converter, chmod calculator and much more. No signup, no API, zero cost.';
+      if (metaDesc) metaDesc.content = 'Access 65+ free developer tools — JSON Formatter, Base64, JWT Decoder, Image Compressor, CSS Generators & more. No signup, no API, 100% client-side. Works offline.';
       const canonical = document.querySelector('link[rel="canonical"]');
       if (canonical) canonical.href = 'https://zeroapitools.vercel.app/';
       

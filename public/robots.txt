@@ -1,6 +1,5 @@
 User-agent: *
 Allow: /
-Crawl-delay: 1
 
 User-agent: Googlebot
 Allow: /
@@ -8,5 +7,4 @@ Allow: /
 User-agent: Bingbot
 Allow: /
 
-Host: https://zeroapitools.vercel.app
 Sitemap: https://zeroapitools.vercel.app/sitemap.xml

@@ -1,4 +1,5 @@
 {
+  "cleanUrls": true,
   "redirects": [
     { "source": "/tools", "destination": "/", "statusCode": 301 },
     { "source": "/index", "destination": "/", "statusCode": 301 }

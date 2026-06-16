@@ -1,5 +1,5 @@
 // ZeroApiTools Service Worker — Offline Support
-const CACHE_NAME = 'zeroapitools-v1';
+const CACHE_NAME = 'zeroapitools-v2';
 
 // Install: Cache the app shell
 self.addEventListener('install', (event) => {
