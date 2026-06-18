@@ -713,8 +713,11 @@ a:hover { color: var(--accent-cyan-light); }
 }
 
 .pane {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-primary);
+  background: rgba(20, 19, 36, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.05);
   border-radius: var(--radius-lg);
   overflow: hidden;
   display: flex;
@@ -726,17 +729,18 @@ a:hover { color: var(--accent-cyan-light); }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border-primary);
-  background: rgba(0, 255, 224, 0.03);
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.05) 0%, rgba(0, 255, 224, 0.05) 100%);
 }
 
 .pane-title {
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: var(--text-muted);
+  color: var(--text-primary);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
 
 .pane-body {
@@ -755,23 +759,25 @@ a:hover { color: var(--accent-cyan-light); }
   max-width: 100%;
   min-width: 0;
   min-height: 280px;
-  background: var(--bg-primary);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
   padding: 16px;
   color: var(--text-primary);
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.7;
   resize: vertical;
   outline: none;
-  transition: border-color var(--transition-fast);
+  transition: all var(--transition-fast);
   tab-size: 2;
 }
 
 .textarea-code:focus {
   border-color: var(--accent-purple);
-  box-shadow: 0 0 0 3px var(--accent-purple-dim);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 0 0 3px var(--accent-purple-dim), 0 0 20px rgba(0, 255, 224, 0.15);
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .textarea-code::placeholder {
@@ -780,10 +786,11 @@ a:hover { color: var(--accent-cyan-light); }
 
 .input-field {
   width: 100%;
-  background: var(--bg-primary);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-sm);
-  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
   color: var(--text-primary);
   font-family: var(--font-body);
   font-size: 14px;
@@ -793,7 +800,8 @@ a:hover { color: var(--accent-cyan-light); }
 
 .input-field:focus {
   border-color: var(--accent-purple);
-  box-shadow: 0 0 0 3px var(--accent-purple-dim);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 0 0 3px var(--accent-purple-dim), 0 0 15px rgba(0, 255, 224, 0.15);
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .input-field::placeholder {
@@ -802,19 +810,22 @@ a:hover { color: var(--accent-cyan-light); }
 
 /* Select */
 .select-field {
-  background: var(--bg-primary);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-sm);
-  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
   color: var(--text-primary);
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 14px;
   outline: none;
   cursor: pointer;
-  transition: border-color var(--transition-fast);
+  transition: all var(--transition-fast);
 }
 .select-field:focus {
   border-color: var(--accent-purple);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 0 0 3px var(--accent-purple-dim), 0 0 15px rgba(0, 255, 224, 0.15);
+  background: rgba(0, 0, 0, 0.5);
 }
 
 /* Labels */
@@ -1694,36 +1705,40 @@ a:hover { color: var(--accent-cyan-light); }
 }
 
 /* Tab groups for tools */
+/* Tab groups for tools */
 .tab-group {
   display: flex;
-  gap: 2px;
-  background: var(--bg-primary);
-  border-radius: var(--radius-sm);
-  padding: 3px;
-  border: 1px solid var(--border-primary);
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  border-radius: 100px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .tab-btn {
-  padding: 6px 16px;
-  border-radius: 6px;
+  padding: 6px 18px;
+  border-radius: 100px;
   border: none;
   background: transparent;
   color: var(--text-muted);
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .tab-btn.active {
-  background: var(--accent-purple);
+  background: var(--gradient-purple-cyan);
   color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), 0 0 12px rgba(0, 255, 224, 0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .tab-btn:hover:not(.active) {
   color: var(--text-primary);
-  background: var(--bg-surface);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 /* Result count */
@@ -2105,34 +2120,60 @@ a:hover { color: var(--accent-cyan-light); }
 }
 
 /* ========================================
+   GLASS & NEON UTILITIES
+   ======================================== */
+.pane, .textarea-code, .input-field, .select-field {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.pane:focus-within, .textarea-code:focus, .input-field:focus, .select-field:focus {
+  border-color: var(--accent-purple);
+  box-shadow: 0 0 15px rgba(0, 255, 224, 0.2);
+}
+
+/* ========================================
    TAB GROUP (shared)
    ======================================== */
 .tab-group {
   display: flex;
   gap: 4px;
-  background: var(--bg-primary);
-  border-radius: var(--radius-sm);
-  padding: 3px;
-  border: 1px solid var(--border-primary);
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  border-radius: 100px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
   overflow-x: auto;
   flex-wrap: wrap;
 }
 
 .tab-btn {
-  padding: 6px 14px;
-  border-radius: calc(var(--radius-sm) - 2px);
+  padding: 6px 18px;
+  border-radius: 100px;
   border: none;
   background: transparent;
   color: var(--text-muted);
   font-family: var(--font-body);
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: all var(--transition-fast);
-  white-space: nowrap;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.tab-btn:hover { color: var(--text-primary); background: var(--bg-surface); }
-.tab-btn.active { background: var(--accent-purple-dim); color: var(--accent-purple-light); font-weight: 700; }
+
+.tab-btn.active {
+  background: var(--gradient-purple-cyan);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), 0 0 12px rgba(0, 255, 224, 0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.tab-btn:hover:not(.active) {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
 
 /* ========================================
    CHECKBOX LABEL
