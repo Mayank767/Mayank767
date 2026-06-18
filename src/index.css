@@ -674,22 +674,56 @@ a:hover { color: var(--accent-cyan-light); }
   max-width: 1280px;
   margin: 0 auto;
   width: 100%;
+  position: relative;
+}
+
+.tool-page::before, .tool-page::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.tool-page::before {
+  top: 10%;
+  left: 5%;
+  width: 40vw;
+  height: 40vw;
+  max-width: 500px;
+  max-height: 500px;
+  background: rgba(139, 92, 246, 0.2); /* Purple */
+}
+
+.tool-page::after {
+  bottom: 10%;
+  right: 5%;
+  width: 30vw;
+  height: 30vw;
+  max-width: 400px;
+  max-height: 400px;
+  background: rgba(0, 255, 224, 0.15); /* Cyan */
 }
 
 .tool-header {
   margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
 }
 
 .tool-title {
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  color: var(--text-heading);
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  color: white;
   margin-bottom: 6px;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
 .tool-description {
-  font-size: 15px;
+  font-size: 16px;
   color: var(--text-secondary);
 }
 
@@ -697,6 +731,8 @@ a:hover { color: var(--accent-cyan-light); }
   display: flex;
   flex-direction: column;
   gap: 20px;
+  position: relative;
+  z-index: 1;
 }
 
 /* Split pane layout */
@@ -713,11 +749,13 @@ a:hover { color: var(--accent-cyan-light); }
 }
 
 .pane {
-  background: rgba(20, 19, 36, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0.4) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top-color: rgba(255, 255, 255, 0.2);
+  border-left-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-lg);
   overflow: hidden;
   display: flex;
