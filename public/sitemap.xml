@@ -604,4 +604,11 @@
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://zeroapitools.vercel.app/blog-post/sql-formatter-free-tool-bina-upload-data-format" />
   </url>
+  <url>
+    <loc>https://zeroapitools.vercel.app/blog-post/how-to-compress-images-locally-without-upload</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://zeroapitools.vercel.app/blog-post/how-to-compress-images-locally-without-upload" />
+  </url>
 </urlset>
