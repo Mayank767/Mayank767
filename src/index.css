@@ -2441,8 +2441,7 @@ body {
 }
 
 .pane:hover {
-  transform: perspective(1000px) translateZ(4px);
-  box-shadow: var(--shadow-md), 0 0 20px rgba(0, 255, 224, 0.06);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
 }
 
 /* ── Stat card 3D ── */
