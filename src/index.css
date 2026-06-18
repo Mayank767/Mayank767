@@ -3277,3 +3277,89 @@ body {
 .cat-bg-blue { background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(37, 99, 235, 0.05) 100%); border: 1px solid rgba(59,130,246,0.3); color: var(--accent-blue-light); }
 .cat-bg-rose { background: linear-gradient(135deg, rgba(244, 63, 94, 0.2) 0%, rgba(225, 29, 72, 0.05) 100%); border: 1px solid rgba(244,63,94,0.3); color: var(--accent-rose); }
 .cat-bg-amber { background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(217, 119, 6, 0.05) 100%); border: 1px solid rgba(245,158,11,0.3); color: var(--accent-amber); }
+
+/* ========================================
+   GLOBAL MOBILE RESPONSIVENESS FIXES
+   ======================================== */
+
+@media (max-width: 768px) {
+  /* 1. Global Forms & Inputs iOS Zoom fix */
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+  input, select, button {
+    min-height: 44px;
+  }
+  
+  /* 2. Navbar Responsiveness */
+  .navbar {
+    padding: 0 16px;
+  }
+  .navbar-search input {
+    width: 100%;
+    max-width: 180px;
+    padding: 8px 16px 8px 34px;
+  }
+  .navbar-search input:focus {
+    width: 100%;
+    max-width: 220px;
+  }
+  .navbar-title {
+    font-size: 16px;
+  }
+  .navbar-subtitle {
+    display: none; /* Hide on mobile to save space */
+  }
+
+  /* 3. Hero & Landing */
+  .landing {
+    padding: 0 16px 40px;
+  }
+  .hero {
+    padding: 40px 0 24px;
+  }
+  .hero-title {
+    font-size: clamp(28px, 8vw, 40px); /* Slightly smaller on mobile */
+  }
+  .hero-subtitle {
+    margin: 0 auto 24px;
+    font-size: 16px;
+  }
+
+  /* 4. Tools Grid */
+  .tools-grid {
+    grid-template-columns: 1fr; /* Single column on mobile */
+  }
+
+  /* 5. Tool Containers */
+  .tool-container {
+    padding: 16px;
+    margin: 16px auto;
+  }
+  .tool-content {
+    padding: 16px;
+  }
+  .code-editor, textarea, input[type="text"] {
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+  .split-pane {
+    flex-direction: column !important;
+  }
+  .split-pane > div {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Hide search text on extra small phones if needed, or shrink further */
+  .navbar-search input {
+    max-width: 140px;
+  }
+  .navbar-search input:focus {
+    max-width: 160px;
+    position: absolute;
+    right: 0;
+    z-index: 10;
+  }
+}
