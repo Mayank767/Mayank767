@@ -345,7 +345,7 @@ function App() {
       window.history.pushState(null, '', '/');
       document.title = 'ZeroApiTools: Free In-Browser Developer Utilities';
       const metaDesc = document.querySelector('meta[name="description"]');
-      if (metaDesc) metaDesc.content = 'Access 65+ free developer tools that run entirely in your browser. JSON Formatter, Base64, Image Compressor & more. 100% private, no signup, no API.';
+      if (metaDesc) metaDesc.content = `Access ${TOOLS.length}+ free developer tools that run entirely in your browser. JSON Formatter, Base64, Image Compressor & more. 100% private, no signup, no API.`;
       const canonical = document.querySelector('link[rel="canonical"]');
       if (canonical) canonical.href = 'https://zeroapitools.vercel.app/';
       
@@ -356,7 +356,7 @@ function App() {
           "@type": "WebApplication",
           "name": "ZeroApiTools",
           "url": "https://zeroapitools.vercel.app/",
-          "description": "65+ free browser-based developer tools. No API, no uploads, 100% client-side.",
+          "description": `${TOOLS.length}+ free browser-based developer tools. No API, no uploads, 100% client-side.`,
           "applicationCategory": "DeveloperApplication",
           "operatingSystem": "Any",
           "offers": {

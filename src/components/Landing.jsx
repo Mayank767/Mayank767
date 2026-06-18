@@ -85,7 +85,7 @@ export default function Landing() {
       <section className="hero">
         <div className="hero-badge">🚀 ZeroApiTools — 100% Free &amp; Open Source</div>
         <h1 className="hero-title">
-          65+ <span className="gradient-text">Free Developer Tools</span>
+          {TOOLS.length}+ <span className="gradient-text">Free Developer Tools</span>
           <br />
           That Run In Your Browser
         </h1>
@@ -291,7 +291,7 @@ export default function Landing() {
 
         <div className="faq-item" style={{ marginBottom: '20px', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
           <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.1rem' }}>How does ZeroApiTools compare to paid developer tools?</h3>
-          <p>ZeroApiTools offers 65+ tools completely free with no account, no rate limits, and no data upload — features that many paid tools charge for. The key advantage is that everything processes locally in your browser rather than on a remote cloud server, giving you both speed and privacy.</p>
+          <p>ZeroApiTools offers {TOOLS.length}+ tools completely free with no account, no rate limits, and no data upload — features that many paid tools charge for. The key advantage is that everything processes locally in your browser rather than on a remote cloud server, giving you both speed and privacy.</p>
         </div>
       </section>
     </div>
