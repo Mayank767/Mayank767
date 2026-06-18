@@ -95,6 +95,9 @@ const PdfSplit = React.lazy(() => import('./components/pdf/PdfSplit'));
 const PdfCompress = React.lazy(() => import('./components/pdf/PdfCompress'));
 const PdfPassword = React.lazy(() => import('./components/pdf/PdfPassword'));
 
+// API tools
+const ApiTester = React.lazy(() => import('./components/api/ApiTester'));
+
 // ─────────────────────────────────────────
 // App Context — shared state across components
 // ─────────────────────────────────────────
@@ -196,6 +199,9 @@ export const TOOLS = [
   { id: 'pdf-split', name: 'PDF Splitter', desc: 'Extract specific pages from a PDF file', seoTitle: 'PDF Splitter Online Free | ZeroApiTools', seoDesc: 'Extract specific pages from a PDF file. Free online tool, no signup required, works in browser. | ZeroApiTools', icon: '✂️', category: 'pdf', component: PdfSplit },
   { id: 'pdf-compress', name: 'PDF Compressor', desc: 'Reduce PDF file size securely. 100% private, no files are uploaded to any server.', seoTitle: 'PDF Compressor Online Free | ZeroApiTools', seoDesc: 'Reduce PDF file size securely. 100% private, no files are uploaded to any server. Free online tool, no signup required, works in browser. | ZeroApiTools', icon: '🗜️', category: 'pdf', component: PdfCompress },
   { id: 'pdf-password', name: 'PDF Password Lock', desc: 'Lock or unlock PDF files with a password', seoTitle: 'PDF Password Lock Online Free | ZeroApiTools', seoDesc: 'Lock or unlock PDF files with a password. Free online tool, no signup required, works in browser. | ZeroApiTools', icon: '🔐', category: 'pdf', component: PdfPassword },
+
+  // API Testing (new category)
+  { id: 'api-tester', name: 'API Tester (Postman Alt)', desc: 'Test REST APIs locally. Send GET, POST, PUT requests, edit headers, and view responses. 100% private.', seoTitle: 'API Tester Online Free — Postman Alternative | ZeroApiTools', seoDesc: 'Free API tester online. Test REST APIs locally. Send GET, POST, PUT, DELETE requests, add headers and body. No signup, no server. | ZeroApiTools', icon: '⚡', category: 'api', component: ApiTester, sample: 'https://jsonplaceholder.typicode.com/todos/1' },
 ];
 
 export const CATEGORIES = [
@@ -207,6 +213,7 @@ export const CATEGORIES = [
   { id: 'css', name: 'CSS Generators', icon: '🎨' },
   { id: 'image', name: 'Image', icon: '🖼️' },
   { id: 'pdf', name: 'PDF Tools', icon: '📄' },
+  { id: 'api', name: 'API Testing', icon: '⚡' },
   { id: 'security', name: 'Security', icon: '🔒' },
   { id: 'seo', name: 'SEO & Web', icon: '🌐' },
   { id: 'unique', name: '✨ Unique', icon: '🚀' },
