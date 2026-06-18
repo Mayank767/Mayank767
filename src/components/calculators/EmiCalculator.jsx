@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 
 export default function EmiCalculator({ copyToClipboard, showToast }) {
   const [principal, setPrincipal] = useState('500000');
@@ -6,6 +6,51 @@ export default function EmiCalculator({ copyToClipboard, showToast }) {
   const [tenure, setTenure] = useState('60');
   const [tenureType, setTenureType] = useState('months');
   const [showTable, setShowTable] = useState(false);
+
+  useEffect(() => {
+    let script = document.getElementById('faq-schema-emi');
+    if (!script) {
+      script = document.createElement('script');
+      script.id = 'faq-schema-emi';
+      script.type = 'application/ld+json';
+      document.head.appendChild(script);
+    }
+    script.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How is the EMI calculated mathematically?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "EMI is calculated using the formula: EMI = [P x R x (1+R)^N] / [(1+R)^N - 1]. Here P is the Principal loan amount, R is the monthly interest rate, and N is the total number of monthly installments."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is an amortization schedule?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An amortization schedule is a complete table of periodic loan payments, showing the amount of principal and the amount of interest that comprise each payment until the loan is paid off."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the interest component change over time?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. In the early years of your loan, a large portion of your EMI goes towards paying the interest. As you continue to pay off the principal, the interest component decreases and the principal component increases."
+          }
+        }
+      ]
+    });
+
+    return () => {
+      const existingScript = document.getElementById('faq-schema-emi');
+      if (existingScript) existingScript.remove();
+    };
+  }, []);
 
   const calc = useMemo(() => {
     const P = parseFloat(principal);
@@ -178,6 +223,57 @@ export default function EmiCalculator({ copyToClipboard, showToast }) {
           </div>
         </>
       )}
+
+      {/* SEO & Info Section */}
+      <div className="seo-content" style={{ marginTop: '20px', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)', color: 'var(--text-secondary)' }}>
+        <h2 style={{ color: 'var(--text-heading)', marginBottom: '16px', fontSize: '1.5rem' }}>Understanding the EMI Calculation Logic</h2>
+        
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', marginBottom: '24px' }}>
+          <div style={{ background: 'var(--bg-primary)', padding: '16px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-primary)' }}>
+            <h3 style={{ color: 'var(--text-primary)', marginBottom: '8px', fontSize: '1.1rem' }}>The EMI Formula Breakdown</h3>
+            <p style={{ fontSize: '14px', lineHeight: 1.6, marginBottom: '12px' }}>
+              The mathematical formula used to calculate the Equated Monthly Installment is:
+            </p>
+            <div style={{ background: 'var(--bg-elevated)', padding: '12px', borderRadius: '6px', textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--accent-purple-light)', marginBottom: '12px' }}>
+              E = P × R × [ (1+R)^N / ((1+R)^N - 1) ]
+            </div>
+            <ul style={{ fontSize: '13px', lineHeight: 1.6, margin: 0, paddingLeft: '20px' }}>
+              <li><strong>E:</strong> Equated Monthly Installment (EMI)</li>
+              <li><strong>P:</strong> Principal Loan Amount</li>
+              <li><strong>R:</strong> Monthly Interest Rate (Annual Rate / 12 / 100)</li>
+              <li><strong>N:</strong> Loan Tenure in Months</li>
+            </ul>
+          </div>
+
+          <div style={{ background: 'var(--bg-primary)', padding: '16px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-primary)' }}>
+            <h3 style={{ color: 'var(--text-primary)', marginBottom: '8px', fontSize: '1.1rem' }}>Worked Example</h3>
+            <p style={{ fontSize: '14px', lineHeight: 1.6, marginBottom: '8px' }}>Let's calculate the EMI for a <strong>₹5,00,000</strong> loan at <strong>8.5%</strong> annual interest for <strong>5 years</strong> (60 months):</p>
+            <ul style={{ fontSize: '13px', lineHeight: 1.6, margin: 0, paddingLeft: '20px', fontFamily: 'var(--font-mono)' }}>
+              <li>P = 500000</li>
+              <li>R = 8.5 / 12 / 100 = 0.007083</li>
+              <li>N = 60</li>
+              <li style={{ marginTop: '8px', color: 'var(--accent-cyan)' }}>E = 500000 × 0.007083 × [(1.007083)^60 / ((1.007083)^60 - 1)]</li>
+              <li style={{ marginTop: '8px', fontWeight: 'bold', color: 'var(--accent-purple-light)' }}>EMI ≈ ₹10,258</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 style={{ color: 'var(--text-heading)', marginBottom: '16px', fontSize: '1.2rem' }}>Frequently Asked Questions</h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div>
+            <h4 style={{ color: 'var(--text-primary)', marginBottom: '6px', fontSize: '1.05rem' }}>How is the EMI calculated mathematically?</h4>
+            <p style={{ fontSize: '14px', lineHeight: 1.6 }}>EMI is calculated using the formula: <code>EMI = [P x R x (1+R)^N] / [(1+R)^N - 1]</code>. Here P is the Principal loan amount, R is the monthly interest rate, and N is the total number of monthly installments.</p>
+          </div>
+          <div>
+            <h4 style={{ color: 'var(--text-primary)', marginBottom: '6px', fontSize: '1.05rem' }}>What is an amortization schedule?</h4>
+            <p style={{ fontSize: '14px', lineHeight: 1.6 }}>An amortization schedule is a complete table of periodic loan payments, showing the amount of principal and the amount of interest that comprise each payment until the loan is paid off. Our calculator generates this automatically so you can track your outstanding balance.</p>
+          </div>
+          <div>
+            <h4 style={{ color: 'var(--text-primary)', marginBottom: '6px', fontSize: '1.05rem' }}>Does the interest component change over time?</h4>
+            <p style={{ fontSize: '14px', lineHeight: 1.6 }}>Yes. In the early years of your loan, a large portion of your EMI goes towards paying the interest. As you continue to pay off the principal, the interest component decreases and the principal component increases.</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

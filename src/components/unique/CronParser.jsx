@@ -108,6 +108,51 @@ export default function CronParser({ copyToClipboard, showToast, sampleData }) {
     return () => document.removeEventListener('load-sample', handler);
   }, []);
 
+  useEffect(() => {
+    let script = document.getElementById('faq-schema');
+    if (!script) {
+      script = document.createElement('script');
+      script.id = 'faq-schema';
+      script.type = 'application/ld+json';
+      document.head.appendChild(script);
+    }
+    script.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What does `* * * * *` mean in cron syntax?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It means \"every minute\". The asterisk (*) is a wildcard character that matches all possible values for that field. So five asterisks mean every minute, of every hour, of every day, of every month, and every day of the week."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I set a cron job to run every 5 minutes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use the syntax */5 * * * *. The */5 in the minute field tells the scheduler to run the job whenever the minute is evenly divisible by 5."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can I schedule a task to run daily at midnight?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can use the expression 0 0 * * * (minute 0, hour 0). Some environments also support the special macro string @daily."
+          }
+        }
+      ]
+    });
+
+    return () => {
+      const existingScript = document.getElementById('faq-schema');
+      if (existingScript) existingScript.remove();
+    };
+  }, []);
+
   const parsed = parseCron(expr);
   const description = humanReadable(parsed);
   const nextRuns = getNextRuns(parsed);
@@ -195,6 +240,58 @@ export default function CronParser({ copyToClipboard, showToast, sampleData }) {
           ⚠ Invalid cron expression — must have exactly 5 fields
         </div>
       )}
+
+      {/* SEO & Info Section */}
+      <div className="seo-content" style={{ marginTop: '20px', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)', color: 'var(--text-secondary)' }}>
+        <h2 style={{ color: 'var(--text-heading)', marginBottom: '16px', fontSize: '1.5rem' }}>How to Read Cron Expressions</h2>
+        <p style={{ marginBottom: '16px', lineHeight: 1.6 }}>
+          A cron expression is a string consisting of five (or sometimes six) fields separated by white space that represents a set of times to execute a routine. In our <strong>cron expression generator</strong>, we use the standard 5-field format widely used by Linux/Unix environments:
+        </p>
+        <div style={{ overflowX: 'auto', marginBottom: '24px' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '14px', background: 'var(--bg-primary)', borderRadius: 'var(--radius-md)' }}>
+            <thead>
+              <tr style={{ borderBottom: '2px solid var(--border-primary)' }}>
+                <th style={{ padding: '12px' }}>Field</th>
+                <th style={{ padding: '12px' }}>Allowed Values</th>
+                <th style={{ padding: '12px' }}>Special Characters</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style={{ borderBottom: '1px solid var(--border-primary)' }}>
+                <td style={{ padding: '12px', color: 'var(--accent-cyan)', fontWeight: 600 }}>Minute</td><td style={{ padding: '12px' }}>0-59</td><td style={{ padding: '12px' }}>* , - /</td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid var(--border-primary)' }}>
+                <td style={{ padding: '12px', color: 'var(--accent-purple)', fontWeight: 600 }}>Hour</td><td style={{ padding: '12px' }}>0-23</td><td style={{ padding: '12px' }}>* , - /</td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid var(--border-primary)' }}>
+                <td style={{ padding: '12px', color: 'var(--accent-emerald)', fontWeight: 600 }}>Day of Month</td><td style={{ padding: '12px' }}>1-31</td><td style={{ padding: '12px' }}>* , - /</td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid var(--border-primary)' }}>
+                <td style={{ padding: '12px', color: 'var(--accent-rose)', fontWeight: 600 }}>Month</td><td style={{ padding: '12px' }}>1-12 or JAN-DEC</td><td style={{ padding: '12px' }}>* , - /</td>
+              </tr>
+              <tr>
+                <td style={{ padding: '12px', color: '#f0ad4e', fontWeight: 600 }}>Day of Week</td><td style={{ padding: '12px' }}>0-6 (0=Sun) or SUN-SAT</td><td style={{ padding: '12px' }}>* , - /</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style={{ color: 'var(--text-heading)', marginBottom: '16px', fontSize: '1.2rem' }}>Frequently Asked Questions</h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div>
+            <h4 style={{ color: 'var(--text-primary)', marginBottom: '6px', fontSize: '1.05rem' }}>What does `* * * * *` mean in cron syntax?</h4>
+            <p style={{ fontSize: '14px', lineHeight: 1.6 }}>It means "every minute". The asterisk (<code>*</code>) is a wildcard character that matches all possible values for that field. So five asterisks mean every minute, of every hour, of every day, of every month, and every day of the week.</p>
+          </div>
+          <div>
+            <h4 style={{ color: 'var(--text-primary)', marginBottom: '6px', fontSize: '1.05rem' }}>How do I set a cron job to run every 5 minutes?</h4>
+            <p style={{ fontSize: '14px', lineHeight: 1.6 }}>Use the syntax <code>*/5 * * * *</code>. The <code>*/5</code> in the minute field tells the scheduler to run the job whenever the minute is evenly divisible by 5.</p>
+          </div>
+          <div>
+            <h4 style={{ color: 'var(--text-primary)', marginBottom: '6px', fontSize: '1.05rem' }}>How can I schedule a task to run daily at midnight?</h4>
+            <p style={{ fontSize: '14px', lineHeight: 1.6 }}>You can use the expression <code>0 0 * * *</code> (minute 0, hour 0). Some environments also support the special macro string <code>@daily</code>.</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -85,14 +85,14 @@ export default function Landing() {
       <section className="hero">
         <div className="hero-badge">🚀 ZeroApiTools — 100% Free &amp; Open Source</div>
         <h1 className="hero-title">
-          <span className="gradient-text">Developer Tools</span>
+          65+ <span className="gradient-text">Free Developer Tools</span>
           <br />
           That Run In Your Browser
         </h1>
         <p className="hero-subtitle">
-          {TOOLS.length}+ essential tools for developers — no API calls, no uploads, no cost.
+          The ultimate collection of fast, private utilities for developers.
           <br />
-          <strong>Everything runs privately in your browser. Your data never leaves your device.</strong>
+          <strong>No server uploads, no APIs, no signups. Everything executes 100% locally.</strong>
         </p>
 
 

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import imageCompression from 'browser-image-compression';
 
 function formatBytes(b) {
@@ -16,6 +16,51 @@ export default function ImageCompressor({ copyToClipboard, showToast }) {
   const [dragOver, setDragOver] = useState(false);
   const fileRef = useRef();
   const canvasRef = useRef();
+
+  useEffect(() => {
+    let script = document.getElementById('faq-schema-image');
+    if (!script) {
+      script = document.createElement('script');
+      script.id = 'faq-schema-image';
+      script.type = 'application/ld+json';
+      document.head.appendChild(script);
+    }
+    script.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Are my images uploaded to a server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Our Image Compressor runs entirely in your browser using local JavaScript. Your files never leave your device, ensuring 100% privacy and blazing fast speeds."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What image formats are supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We support all modern web formats including JPEG, PNG, WebP, AVIF, BMP, and GIF. You can also convert your images between these formats."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does this compare to TinyPNG or Squoosh?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Unlike TinyPNG which requires uploading files to their servers, our tool processes everything locally. It uses similar compression algorithms (like browser-native WebP/JPEG encoding) giving you comparable quality without the upload wait time or file size limits."
+          }
+        }
+      ]
+    });
+
+    return () => {
+      const existingScript = document.getElementById('faq-schema-image');
+      if (existingScript) existingScript.remove();
+    };
+  }, []);
 
   const processFile = file => {
     if (!file || !file.type.startsWith('image/')) { showToast('Please upload an image file', 'error'); return; }
@@ -71,6 +116,11 @@ export default function ImageCompressor({ copyToClipboard, showToast }) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       <canvas ref={canvasRef} style={{ display: 'none' }} />
 
+      <div style={{ padding: '12px 16px', background: 'var(--accent-emerald-dim)', border: '1px solid var(--accent-emerald)', borderRadius: 'var(--radius-sm)', color: 'var(--text-heading)', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px' }}>
+        <span style={{ fontSize: '18px' }}>🔒</span>
+        <span><strong>100% Private Client-Side Compression:</strong> Your files are processed entirely in your web browser and are <em>never</em> uploaded to any server.</span>
+      </div>
+
       {!original ? (
         <div
           className={`drop-zone ${dragOver ? 'dragover' : ''}`}
@@ -81,7 +131,7 @@ export default function ImageCompressor({ copyToClipboard, showToast }) {
         >
           <div className="drop-zone-icon">🖼️</div>
           <div className="drop-zone-text">Drop an image here or click to browse</div>
-          <div className="drop-zone-hint">Supports JPG, PNG, GIF, BMP, WebP</div>
+          <div className="drop-zone-hint">Supports PNG, JPEG, WebP, AVIF, GIF, BMP</div>
           <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={e => processFile(e.target.files[0])} />
         </div>
       ) : (
@@ -141,6 +191,26 @@ export default function ImageCompressor({ copyToClipboard, showToast }) {
           </div>
         </>
       )}
+
+      {/* SEO & Info Section */}
+      <div className="seo-content" style={{ marginTop: '20px', padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)', color: 'var(--text-secondary)' }}>
+        <h2 style={{ color: 'var(--text-heading)', marginBottom: '16px', fontSize: '1.5rem' }}>Image Compressor FAQs & Details</h2>
+        
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div>
+            <h3 style={{ color: 'var(--text-primary)', marginBottom: '6px', fontSize: '1.1rem' }}>Are my images uploaded to a server?</h3>
+            <p style={{ fontSize: '14px', lineHeight: 1.6 }}>No. Our Image Compressor runs entirely in your browser using local JavaScript and Web Workers. Your files <strong>never leave your device</strong>, ensuring complete privacy, zero upload wait times, and zero data limits.</p>
+          </div>
+          <div>
+            <h3 style={{ color: 'var(--text-primary)', marginBottom: '6px', fontSize: '1.1rem' }}>What image formats are supported?</h3>
+            <p style={{ fontSize: '14px', lineHeight: 1.6 }}>We support modern web formats including <strong>JPEG, PNG, WebP, AVIF, BMP, and GIF</strong>. You can easily compress images and convert them to next-gen formats like WebP to dramatically improve your website's load speed.</p>
+          </div>
+          <div>
+            <h3 style={{ color: 'var(--text-primary)', marginBottom: '6px', fontSize: '1.1rem' }}>How does this compare to TinyPNG or Squoosh?</h3>
+            <p style={{ fontSize: '14px', lineHeight: 1.6 }}>Unlike server-based tools like TinyPNG which require uploading files over the internet, our tool processes everything locally on your machine. It utilizes browser-native encoding to achieve comparable quality compression instantly, without any file size limits or paywalls.</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
