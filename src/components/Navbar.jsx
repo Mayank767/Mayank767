@@ -75,6 +75,8 @@ export default function Navbar({ currentTool, onGoHome, onSelectTool }) {
         <div className="navbar-search">
           <span className="navbar-search-icon">🔍</span>
           <input
+            id="global-search-input"
+            name="search"
             ref={inputRef}
             type="text"
             placeholder="Search tools... (↑↓ Enter)"
