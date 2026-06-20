@@ -3443,3 +3443,17 @@ body {
     z-index: 10;
   }
 }
+
+/* Ensure links in the FAQ section are distinguishable via underline and contrast */
+#faq .faq-item p a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  color: #22d3ee;
+  transition: color var(--transition-fast), text-decoration-color var(--transition-fast);
+}
+
+#faq .faq-item p a:hover {
+  text-decoration: none;
+  color: #67e8f9;
+}
