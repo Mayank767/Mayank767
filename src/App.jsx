@@ -98,7 +98,6 @@ const PdfPassword = React.lazy(() => import('./components/pdf/PdfPassword'));
 
 // API tools
 const ApiTester = React.lazy(() => import('./components/api/ApiTester'));
-const AiAssistant = React.lazy(() => import('./components/ai/AiAssistant'));
 
 // ─────────────────────────────────────────
 // App Context — shared state across components
@@ -110,9 +109,6 @@ export const useApp = useAppCtx;
 // TOOL REGISTRY
 // ─────────────────────────────────────────
 export const TOOLS = [
-  // AI Tools
-  { id: 'ai-assistant', name: 'NVIDIA Nemotron AI', desc: 'Chat with Nemotron-3-Ultra, an advanced AI that thinks step-by-step.', seoTitle: 'NVIDIA Nemotron AI Assistant Online | ZeroApiTools', seoDesc: 'Chat with NVIDIA Nemotron-3-Ultra AI online for free. Experience advanced reasoning and code generation without leaving your browser. | ZeroApiTools', icon: '🤖', category: 'ai', component: AiAssistant, sample: 'Write a python script to parse a CSV file.' },
-  
   // Text & String
   { id: 'base64', name: 'Base64 Encode/Decode', desc: 'Securely convert text to Base64 and back locally in your browser. 100% private.', seoTitle: 'Base64 Encoder Decoder Online Free — No Upload | ZeroApiTools', seoDesc: 'Free base64 encoder decoder online. Encode text to Base64 or decode Base64 strings instantly in your browser. No signup, no data upload, 100% private. | ZeroApiTools', icon: '🔤', category: 'text', component: Base64Tool, sample: 'Hello, World! 🌍' },
   { id: 'url-encode', name: 'URL Encode/Decode', desc: 'Encode & decode URL components', seoTitle: 'URL Encoder Decoder Online Free | ZeroApiTools', seoDesc: 'Encode & decode URL components. Free online tool, no signup required, works in browser. | ZeroApiTools', icon: '🔗', category: 'text', component: UrlEncodeTool, sample: 'https://example.com/search?q=hello world&lang=en' },
