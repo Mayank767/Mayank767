@@ -3,6 +3,10 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 import fs from 'fs'
 import { TOOL_FAQS, GENERIC_FAQS } from './src/data/faqs.js'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 // ─────────────────────────────────────────────────────────
 // Extract tool data from App.jsx at config-load time

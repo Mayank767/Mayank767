@@ -3,12 +3,13 @@ import './index.css';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Landing from './components/Landing';
-import ToolFaq from './components/ToolFaq';
-import RelatedTools from './components/layout/RelatedTools';
-import About from './components/legal/About';
-import Privacy from './components/legal/Privacy';
-import Terms from './components/legal/Terms';
-import { BlogList, BlogPost } from './components/blog/BlogViews';
+const ToolFaq = React.lazy(() => import('./components/ToolFaq'));
+const RelatedTools = React.lazy(() => import('./components/layout/RelatedTools'));
+const About = React.lazy(() => import('./components/legal/About'));
+const Privacy = React.lazy(() => import('./components/legal/Privacy'));
+const Terms = React.lazy(() => import('./components/legal/Terms'));
+const BlogList = React.lazy(() => import('./components/blog/BlogViews').then(m => ({ default: m.BlogList })));
+const BlogPost = React.lazy(() => import('./components/blog/BlogViews').then(m => ({ default: m.BlogPost })));
 // Text tools
 const Base64Tool = React.lazy(() => import('./components/text/Base64Tool'));
 const UrlEncodeTool = React.lazy(() => import('./components/text/UrlEncodeTool'));
@@ -473,6 +474,7 @@ function App() {
       <Navbar currentTool={currentTool} onGoHome={goHome} onSelectTool={selectTool} />
 
       <main>
+      <React.Suspense fallback={<div style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)' }}>Loading...</div>}>
       {currentTool === 'about' ? (
         <About />
       ) : currentTool === 'privacy' ? (
@@ -544,6 +546,7 @@ function App() {
       ) : (
         <Landing />
       )}
+      </React.Suspense>
       </main>
 
       <Footer />
