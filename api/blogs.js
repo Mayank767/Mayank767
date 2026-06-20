@@ -1,3 +1,5 @@
+/* eslint-env node */
+/* eslint-disable no-useless-escape */
 import { Client } from '@notionhq/client';
 import { NotionToMarkdown } from 'notion-to-md';
 

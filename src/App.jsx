@@ -101,8 +101,8 @@ const ApiTester = React.lazy(() => import('./components/api/ApiTester'));
 // ─────────────────────────────────────────
 // App Context — shared state across components
 // ─────────────────────────────────────────
-export const AppContext = createContext(null);
-export const useApp = () => useContext(AppContext);
+import { AppContext, useApp as useAppCtx } from './context/AppContext';
+export const useApp = useAppCtx;
 
 // ─────────────────────────────────────────
 // TOOL REGISTRY

@@ -1,0 +1,23 @@
+{
+  "target": "https://zeroapitools.vercel.app",
+  "date": "2026-06-20",
+  "overallGrade": "B",
+  "vulnerabilities": {
+    "critical": 0,
+    "high": 1,
+    "moderate": 1,
+    "low": 1
+  },
+  "lintErrors": 10,
+  "bundleSizeJS": {
+    "totalGzippedKb": 330.57,
+    "largestChunkGzippedKb": 175.58
+  },
+  "renderingStrategy": "SSG via Custom Vite Prerender Plugin",
+  "securityHeaders": {
+    "Strict-Transport-Security": "Pass",
+    "Content-Security-Policy": "Fail",
+    "X-Frame-Options": "Fail",
+    "X-Content-Type-Options": "Fail"
+  }
+}
