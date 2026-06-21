@@ -167,6 +167,12 @@ body::before {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  width: 100%;
+}
+
+main {
+  width: 100%;
+  flex: 1;
 }
 
 a {
@@ -201,11 +207,37 @@ a:hover { color: var(--accent-cyan-light); }
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-primary);
-  padding: 0 24px;
+  padding: 0 40px;
   height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+/* ── Navbar progress bar (ZeroApiTools style) ── */
+.navbar-progress-track {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 9999;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.navbar-progress-bar {
+  height: 2px;
+  width: 0;
+  background: linear-gradient(90deg, #00ffe0, #6366f1);
+  border-radius: 0 2px 2px 0;
+  animation: navProgressLoad 1.4s 0.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  box-shadow: 0 0 10px rgba(0, 255, 224, 0.5);
+}
+
+@keyframes navProgressLoad {
+  from { width: 0; }
+  to   { width: 65%; }
 }
 
 .navbar-brand {
@@ -406,16 +438,75 @@ a:hover { color: var(--accent-cyan-light); }
 
 .landing {
   flex: 1;
-  padding: 0 24px 60px;
-  max-width: 1280px;
-  margin: 0 auto;
   width: 100%;
+  padding: 0;
 }
+
+/* ========================================
+   HERO SECTION — ZeroApiTools Motion Style
+   ======================================== */
 
 .hero {
   text-align: center;
-  padding: 72px 0 48px;
+  padding: 72px 60px 48px;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
 }
+
+/* ── Floating SVG canvas ── */
+.hero-bg-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── All hero content sits above SVG ── */
+.hero > *:not(.hero-bg-svg) {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── SVG Float animations ── */
+@keyframes svgFloatA {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-14px) rotate(2.5deg); }
+}
+@keyframes svgFloatB {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-9px) rotate(-2deg); }
+}
+@keyframes svgFloatC {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
+}
+@keyframes svgPulse {
+  0%,100% { opacity: 0.3; }
+  50%      { opacity: 0.65; }
+}
+@keyframes svgSpinCW {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes svgSpinCCW {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+@keyframes gradientGlow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.85; transform: scale(1.01); }
+}
+
+.svg-float-a { animation: svgFloatA 6s ease-in-out infinite; }
+.svg-float-b { animation: svgFloatB 7.5s ease-in-out infinite 0.5s; }
+.svg-float-c { animation: svgFloatC 5.5s ease-in-out infinite 1s; }
+.svg-pulse   { animation: svgPulse 3.5s ease-in-out infinite; }
+.svg-spin-cw  { animation: svgSpinCW  22s linear infinite; }
+.svg-spin-ccw { animation: svgSpinCCW 28s linear infinite; }
 
 .hero-badge {
   display: inline-flex;
@@ -447,11 +538,6 @@ a:hover { color: var(--accent-cyan-light); }
   -webkit-text-fill-color: transparent;
   background-size: 200% 200%;
   animation: gradientGlow 4s ease-in-out infinite;
-}
-
-@keyframes gradientGlow {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.85; transform: scale(1.01); }
 }
 
 .hero-subtitle {
@@ -571,8 +657,18 @@ a:hover { color: var(--accent-cyan-light); }
 
 .tools-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 16px;
+  width: 100%;
+  padding: 0 40px;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+  width: 100%;
+  padding: 0 40px;
 }
 
 .tool-card {
@@ -2685,7 +2781,6 @@ body {
   display: grid;
   grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr;
   gap: 40px;
-  max-width: 1280px;
   margin: 0 auto 40px;
 }
 
@@ -2895,9 +2990,7 @@ body {
    ======================================== */
 .footer-main {
   display: block;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 48px 24px 36px;
+  padding: 48px 40px 36px;
 }
 
 /* ── Brand wide column ── */

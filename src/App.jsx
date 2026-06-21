@@ -111,9 +111,9 @@ export const useApp = useAppCtx;
 export const TOOLS = [
   // Text & String
   { id: 'base64', name: 'Base64 Encode/Decode', desc: 'Securely convert text to Base64 and back locally in your browser. 100% private.', seoTitle: 'Base64 Encoder Decoder Online Free — No Upload | ZeroApiTools', seoDesc: 'Free base64 encoder decoder online. Encode text to Base64 or decode Base64 strings instantly in your browser. No signup, no data upload, 100% private. | ZeroApiTools', icon: '🔤', category: 'text', component: Base64Tool, sample: 'Hello, World! 🌍' },
-  { id: 'url-encode', name: 'URL Encode/Decode', desc: 'Encode & decode URL components', seoTitle: 'URL Encoder Decoder Online Free | ZeroApiTools', seoDesc: 'Encode & decode URL components. Free online tool, no signup required, works in browser. | ZeroApiTools', icon: '🔗', category: 'text', component: UrlEncodeTool, sample: 'https://example.com/search?q=hello world&lang=en' },
+  { id: 'url-encode', name: 'URL Encoder/Decoder', desc: 'Instantly encode or decode URL components to ensure safe data transmission.', seoTitle: 'Free URL Encoder & Decoder Online: Fast & Secure | ZeroApiTools', seoDesc: 'Instantly encode or decode URL components to ensure safe data transmission. Free browser-based URL encoder/decoder with no upload required. | ZeroApiTools', icon: '🔗', category: 'text', component: UrlEncodeTool, sample: 'https://example.com/search?q=hello world&lang=en' },
   { id: 'html-entity', name: 'HTML Entity Encode/Decode', desc: 'Convert HTML special characters', seoTitle: 'HTML Entity Encode/Decode Online Free | ZeroApiTools', seoDesc: 'Convert HTML special characters. Free online tool, no signup required, works in browser. | ZeroApiTools', icon: '📄', category: 'text', component: HtmlEntityTool, sample: '<h1>Hello & "World"</h1>' },
-  { id: 'jwt-decoder', name: 'JWT Decoder', desc: 'Decode JWT tokens offline. Header, payload & expiry. No server upload.', seoTitle: 'JWT Token Decoder Online Free — Read JWT Payload | ZeroApiTools', seoDesc: 'Free JWT token reader online. Decode JWT tokens — see header, payload & expiry instantly. No server upload, works offline in browser. No signup required. | ZeroApiTools', icon: '🎟️', category: 'text', component: JwtDecoder, sample: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' },
+  { id: 'jwt-decoder', name: 'JWT Decoder', desc: 'Decode JSON Web Tokens instantly. Inspect headers, payload data, and expiration times safely.', seoTitle: 'JWT Decoder Online: Decode Tokens Offline for Free | ZeroApiTools', seoDesc: 'Decode JSON Web Tokens (JWT) instantly in your browser. Inspect headers, payload data, and expiration times safely with zero server uploads. | ZeroApiTools', icon: '🎟️', category: 'text', component: JwtDecoder, sample: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' },
   { id: 'uuid', name: 'UUID Generator', desc: 'Generate random v4 UUIDs in bulk', seoTitle: 'UUID Generator Online Free — Bulk v4 UUID | ZeroApiTools', seoDesc: 'Free UUID generator online. Generate random v4 UUIDs in bulk instantly — no signup, no API, works 100% in your browser. | ZeroApiTools', icon: '🆔', category: 'text', component: UuidGenerator, sample: '5' },
   { id: 'lorem-ipsum', name: 'Lorem Ipsum Generator', desc: 'Generate placeholder text for designs', seoTitle: 'Lorem Ipsum Generator Online Free | ZeroApiTools', seoDesc: 'Generate placeholder text for designs. Free online tool, no signup required, works in browser. | ZeroApiTools', icon: '📝', category: 'text', component: LoremIpsumGenerator, sample: '3' },
   { id: 'word-counter', name: 'Word & Character Counter', desc: 'Count words, characters, sentences & reading time', seoTitle: 'Word Counter & Character Counter Online Free | ZeroApiTools', seoDesc: 'Count words, characters, sentences & reading time. Free online tool, no signup required, works in browser. | ZeroApiTools', icon: '🔢', category: 'text', component: WordCounter, sample: 'The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.' },
@@ -202,7 +202,7 @@ export const TOOLS = [
   { id: 'pdf-password', name: 'PDF Password Lock', desc: 'Lock or unlock PDF files with a password', seoTitle: 'PDF Password Lock Online Free | ZeroApiTools', seoDesc: 'Lock or unlock PDF files with a password. Free online tool, no signup required, works in browser. | ZeroApiTools', icon: '🔐', category: 'pdf', component: PdfPassword },
 
   // API Testing (new category)
-  { id: 'api-tester', name: 'API Tester (Postman Alt)', desc: 'Test REST APIs locally. Send GET, POST, PUT requests, edit headers, and view responses. 100% private.', seoTitle: 'API Tester Online Free — Postman Alternative | ZeroApiTools', seoDesc: 'Free API tester online. Test REST APIs locally. Send GET, POST, PUT, DELETE requests, add headers and body. No signup, no server. | ZeroApiTools', icon: '⚡', category: 'api', component: ApiTester, sample: 'https://jsonplaceholder.typicode.com/todos/1' },
+  { id: 'api-tester', name: 'API Tester', desc: 'Test REST APIs instantly from your browser. Send HTTP requests, configure headers, and inspect responses.', seoTitle: 'Online API Tester: Fast REST Client in Your Browser | ZeroApiTools', seoDesc: 'Test REST APIs instantly from your browser. Send HTTP requests, configure headers, and inspect responses with this lightweight, local API tester. | ZeroApiTools', icon: '⚡', category: 'api', component: ApiTester, sample: 'https://jsonplaceholder.typicode.com/todos/1' },
 ];
 
 export const CATEGORIES = [
@@ -549,7 +549,7 @@ function App() {
       </React.Suspense>
       </main>
 
-      <Footer />
+      {!currentTool && <Footer />}
 
       {/* Toast Container */}
       {toasts.length > 0 && (

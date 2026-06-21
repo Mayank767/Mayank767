@@ -51,6 +51,11 @@ export default function Navbar({ currentTool, onGoHome, onSelectTool }) {
 
   return (
     <nav className="navbar">
+      {/* ── Animated top progress bar ── */}
+      <div className="navbar-progress-track">
+        <div className="navbar-progress-bar" />
+      </div>
+
       <div className="navbar-brand" onClick={onGoHome}>
         <div className="navbar-logo">ZA</div>
         <div>

@@ -124,8 +124,8 @@ export default function ApiTester({ copyToClipboard, showToast }) {
   return (
     <div className="tool-container">
       <div className="tool-header">
-        <h2>🚀 API Tester (Postman Alternative)</h2>
-        <p>Test REST APIs directly from your browser. Send requests, configure headers, and view responses. Data never leaves your device.</p>
+        <h2>🚀 Online API Tester: Fast REST Client in Your Browser</h2>
+        <p>Test REST APIs instantly from your browser. Send HTTP requests, configure headers, and inspect responses with this lightweight, local API tester.</p>
       </div>
 
       <div className="tool-content">
@@ -304,17 +304,20 @@ export default function ApiTester({ copyToClipboard, showToast }) {
       </div>
 
       <div className="tool-info">
-        <h3>How to use the API Tester</h3>
-        <p>This tool allows you to send HTTP requests to test REST APIs directly from your browser. It functions similarly to Postman or Hoppscotch but requires no installation or account.</p>
-        
-        <br/>
-        <h4>⚠️ Important Note on CORS</h4>
-        <p>Because this tool runs entirely in your browser (client-side) to ensure 100% privacy, it is subject to <strong>CORS (Cross-Origin Resource Sharing)</strong> policies enforced by browsers.</p>
-        <ul>
-          <li>You can test any public API that has CORS enabled (e.g. <code>jsonplaceholder.typicode.com</code>, <code>httpbin.org</code>).</li>
-          <li>You can test your own local APIs (like <code>localhost:8080</code>) <strong>only if</strong> your local API server is configured to send <code>Access-Control-Allow-Origin: *</code> headers.</li>
-          <li>If an API does not support CORS, the browser will block the request and show a "Network Error / CORS" status.</li>
-        </ul>
+        <h2>What is this Online API Tester?</h2>
+        <p>Think of this as a lightweight, browser-native alternative to heavy desktop clients like Postman. It allows you to fire off HTTP requests to your endpoints and inspect the raw JSON responses instantly, without creating an account or installing any software.</p>
+
+        <h2>How to send your first API request</h2>
+        <p>Select your HTTP method (GET, POST, PUT, DELETE) from the dropdown and paste your target URL. Add any required custom headers or JSON payloads in the configuration sections, then hit "Send" to instantly view the server's HTTP status code and response body.</p>
+
+        <h2>Essential features for quick debugging</h2>
+        <p>We built this to be fast and frictionless for everyday development tasks. You can quickly swap request methods, define custom <code>Authorization</code> or <code>Content-Type</code> headers, and format request bodies on the fly to verify that a new route is returning the correct data.</p>
+
+        <h2>Testing Local vs. Public APIs (CORS)</h2>
+        <p>Because this tool executes strictly within your browser environment, it enforces standard CORS policies. To test <code>localhost</code> endpoints, ensure your local development server is configured to return the <code>Access-Control-Allow-Origin: *</code> header.</p>
+
+        <h2>100% Client-Side Privacy</h2>
+        <p>Your API keys, Bearer tokens, and sensitive request payloads never touch our servers. Every network request is dispatched directly from your local machine to the target URL, guaranteeing that your proprietary API data remains completely private.</p>
       </div>
     </div>
   );

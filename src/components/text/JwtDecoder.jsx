@@ -116,45 +116,55 @@ export default function JwtDecoder({ copyToClipboard, showToast, sampleData }) {
         </div>
       )}
 
-      {header && (
-        <div className="pane">
-          <div className="pane-header">
-            <span className="pane-title">Header</span>
-            <button
-              className="btn btn-primary btn-sm"
-              onClick={() => {
+      <div className="pane">
+        <div className="pane-header">
+          <span className="pane-title">Header</span>
+          <button
+            className="btn btn-primary btn-sm"
+            onClick={() => {
+              if (headerJson) {
                 copyToClipboard(headerJson);
                 showToast('Header copied!');
-              }}
-            >
-              Copy
-            </button>
-          </div>
-          <div className="pane-body">
-            <pre className="code-output">{headerJson}</pre>
-          </div>
+              }
+            }}
+            disabled={!header}
+          >
+            Copy
+          </button>
         </div>
-      )}
+        <div className="pane-body">
+          {header ? (
+            <pre className="code-output">{headerJson}</pre>
+          ) : (
+            <textarea className="textarea-code" readOnly placeholder="Decoded header will appear here..." rows={4} />
+          )}
+        </div>
+      </div>
 
-      {payload && (
-        <div className="pane">
-          <div className="pane-header">
-            <span className="pane-title">Payload</span>
-            <button
-              className="btn btn-primary btn-sm"
-              onClick={() => {
+      <div className="pane">
+        <div className="pane-header">
+          <span className="pane-title">Payload</span>
+          <button
+            className="btn btn-primary btn-sm"
+            onClick={() => {
+              if (payloadJson) {
                 copyToClipboard(payloadJson);
                 showToast('Payload copied!');
-              }}
-            >
-              Copy
-            </button>
-          </div>
-          <div className="pane-body">
-            <pre className="code-output">{payloadJson}</pre>
-          </div>
+              }
+            }}
+            disabled={!payload}
+          >
+            Copy
+          </button>
         </div>
-      )}
+        <div className="pane-body">
+          {payload ? (
+            <pre className="code-output">{payloadJson}</pre>
+          ) : (
+            <textarea className="textarea-code" readOnly placeholder="Decoded payload will appear here..." rows={6} />
+          )}
+        </div>
+      </div>
     </div>
   );
 }

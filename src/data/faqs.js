@@ -1,4 +1,22 @@
 export const TOOL_FAQS = {
+  'jwt-decoder': [
+    { q: 'What is a JSON Web Token (JWT)?', a: 'A JSON Web Token (JWT) is a compact, URL-safe means of representing claims to be transferred between two parties. It is commonly used for authentication and authorization in web applications.' },
+    { q: 'Does this decoder verify the token signature?', a: 'No, this tool only decodes the Base64Url encoded Header and Payload sections so you can inspect their contents. It does not verify the cryptographic signature.' },
+    { q: 'Is it safe to paste my JWT here?', a: 'Yes. The JWT Decoder runs entirely locally in your browser. Your token is never uploaded, logged, or sent to any server, ensuring your sensitive data remains private.' },
+    { q: 'Why do I see numbers for the iat and exp fields?', a: 'These fields represent the "Issued At" and "Expiration" times in Unix timestamp format. Our decoder automatically converts these numbers into human-readable dates for you.' },
+  ],
+  'url-encode': [
+    { q: 'What is URL encoding?', a: 'URL encoding (or percent-encoding) is a mechanism for converting characters that cannot be safely transmitted over the internet into a universally accepted format, like turning a space into %20.' },
+    { q: 'What is the difference between encodeURI and encodeURIComponent?', a: 'encodeURI is used for full URLs and ignores characters like ?, /, and &. encodeURIComponent encodes everything, making it perfect for individual query string parameters.' },
+    { q: 'Is this URL Encoder free?', a: 'Yes! Our URL Encoder & Decoder is completely free to use with no hidden fees or account registration required.' },
+    { q: 'Are my URLs sent to a server?', a: 'No. All processing happens locally in your browser via JavaScript. Your URLs, tokens, and data remain strictly on your device.' },
+  ],
+  'api-tester': [
+    { q: 'What is an API Tester online?', a: 'An online API tester is a browser-based tool that lets you send HTTP requests (GET, POST, PUT, DELETE) to REST API endpoints and inspect the responses without installing heavy desktop software like Postman.' },
+    { q: 'Can I test local APIs (localhost) with this tool?', a: 'Yes, but since this tool runs entirely in your browser, your local development server must have CORS (Cross-Origin Resource Sharing) enabled by returning the Access-Control-Allow-Origin: * header.' },
+    { q: 'Are my API keys and request payloads secure?', a: 'Absolutely. The tool executes 100% locally on your machine. Your API keys, Bearer tokens, and request data never touch our servers.' },
+    { q: 'Is this API Tester free to use?', a: 'Yes! It is completely free with no signup required. You can start sending requests and configuring custom headers immediately.' },
+  ],
   'sip-calc': [
     { q: 'What is a SIP Calculator?', a: 'A SIP (Systematic Investment Plan) Calculator helps you estimate returns on monthly mutual fund investments over time using compound interest.' },
     { q: 'How is SIP return calculated?', a: 'SIP returns are calculated using the formula: FV = P × [(1+r)^n – 1] / r × (1+r), where P is monthly investment, r is monthly rate of return, and n is total months.' },
