@@ -1,5 +1,6 @@
 import React from 'react';
-import { useApp, TOOLS } from '../App';
+import { useApp } from '../App';
+import { TOOLS } from '../data/toolsList';
 
 
 export default function Footer() {
@@ -27,7 +28,7 @@ export default function Footer() {
             <div className="footer-badges">
               <span className="footer-badge">🔒 100% Private</span>
               <span className="footer-badge">⚡ Instant</span>
-              <span className="footer-badge">💰 Free Forever</span>
+              <span className="footer-badge">💰 Free</span>
               <span className="footer-badge">🚫 No Signup</span>
               <span className="footer-badge">📡 No Tracking</span>
             </div>
@@ -37,10 +38,22 @@ export default function Footer() {
           <div className="footer-why">
             <div className="footer-why-title">Why ZeroApiTools?</div>
             <ul className="footer-why-list">
-              <li>✅ No data sent to any server — ever</li>
-              <li>✅ Lightning fast & instant load times</li>
-              <li>✅ No rate limits or quotas</li>
-              <li>✅ Open source, always free</li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="check-icon"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                No data sent to any server — ever
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="check-icon"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Lightning fast & instant load times
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="check-icon"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                No rate limits or quotas
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="check-icon"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Open source, always free
+              </li>
             </ul>
           </div>
         </div>

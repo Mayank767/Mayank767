@@ -1,35 +1,84 @@
-import React, { useState, useMemo, useCallback, useRef, useEffect, memo } from 'react';
+import React, { useState, useMemo, useCallback, useRef, useEffect, memo, lazy, Suspense } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { TOOLS, CATEGORIES, useApp } from '../App';
+import { useApp } from '../App';
+import TerminalSimulator from './TerminalSimulator';
+import { TOOLS, CATEGORIES } from '../data/toolsList';
 
-// Removed useCountUp to avoid layout thrashing
+// Lazy-load Three.js scene for performance
+const ThreeDAnimation = lazy(() => import('./ThreeDAnimation'));
 
+class ThreeDErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+  componentDidCatch(error, errorInfo) {
+    console.warn("3D Animation failed to load:", error);
+  }
+  render() {
+    if (this.state.hasError) {
+      return null; // Gracefully degrade by hiding the 3D scene
+    }
+    return this.props.children;
+  }
+}
+
+
+
+/* ═══════════════════════════════════════════
+   PRO MAX: Floating Orbs — 3 layers
+   ═══════════════════════════════════════════ */
+function FloatingOrbs() {
+  return (
+    <>
+      <div className="orb orb-1" />
+      <div className="orb orb-2" />
+      <div className="orb orb-3" />
+    </>
+  );
+}
+
+
+
+/* ═══════════════════════════════════════════
+   Scroll progress bar — green gradient
+   ═══════════════════════════════════════════ */
 function ScrollProgress() {
   const barRef = useRef(null);
   useEffect(() => {
-    const onScroll = () => {
+    let ticking = false;
+    const updateProgress = () => {
       if (!barRef.current) return;
       const el = document.documentElement;
-      const scrolled = el.scrollTop;
-      const total = el.scrollHeight - el.clientHeight;
-      const progress = total > 0 ? (scrolled / total) * 100 : 0;
-      barRef.current.style.width = `${progress}%`;
+      const progress = el.scrollHeight - el.clientHeight > 0
+        ? (el.scrollTop / (el.scrollHeight - el.clientHeight)) : 0;
+      barRef.current.style.transform = `scaleX(${progress})`;
+      ticking = false;
+    };
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateProgress);
+        ticking = true;
+      }
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
   return (
-    <div
-      ref={barRef}
-      style={{
-        position: 'fixed', top: 0, left: 0, width: `0%`, height: 3,
-        background: 'var(--gradient-purple-cyan)', zIndex: 9999,
-        transition: 'width 80ms linear', borderRadius: '0 2px 2px 0',
-        boxShadow: '0 0 8px rgba(16,185,129,0.6)',
-      }}
-    />
+    <div ref={barRef} style={{
+      position: 'fixed', top: 0, left: 0, width: '100%', height: 2,
+      background: 'linear-gradient(90deg, var(--accent), var(--blue))',
+      zIndex: 9999, transition: 'transform 80ms ease-out',
+      transformOrigin: 'left', transform: 'scaleX(0)',
+      boxShadow: '0 0 10px var(--accent-glow)',
+      pointerEvents: 'none',
+    }} />
   );
 }
+
 
 export default function Landing() {
   const { selectTool, favorites, toggleFavorite, recents, usageCount } = useApp();
@@ -38,6 +87,23 @@ export default function Landing() {
   const [viewMode, setViewMode] = useState('categories');
   const [displayedCount, setDisplayedCount] = useState(12);
   const loadMoreRef = useRef(null);
+  // Check if device is mobile to disable heavy 3D animations
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkMobile = () => {
+      const isNarrow = window.innerWidth <= 768;
+      const isMobileAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      setIsMobile(isNarrow || isMobileAgent);
+    };
+    checkMobile();
+    let timeout;
+    const handleResize = () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(checkMobile, 150);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (search || activeCategory !== 'all') return;
@@ -80,103 +146,47 @@ export default function Landing() {
 
   return (
     <div className="landing">
+      {/* ── 3D Background Animation Showcase ── */}
+      {!isMobile && (
+        <ThreeDErrorBoundary>
+          <Suspense fallback={null}>
+            <ThreeDAnimation />
+          </Suspense>
+        </ThreeDErrorBoundary>
+      )}
+
+      {/* ── Background Elements ── */}
+      <FloatingOrbs />
       <ScrollProgress />
 
       {/* ── Hero ── */}
       <section className="hero">
 
-        {/* ── Floating SVG Background Decorations ── */}
-        <svg
-          className="hero-bg-svg"
-          viewBox="0 0 900 380"
-          preserveAspectRatio="xMidYMid slice"
-          aria-hidden="true"
-        >
-          <defs>
-            <radialGradient id="hgA" cx="50%" cy="30%" r="60%">
-              <stop offset="0%" stopColor="#00ffe0" stopOpacity="0.06"/>
-              <stop offset="100%" stopColor="#00ffe0" stopOpacity="0"/>
-            </radialGradient>
-            <radialGradient id="hgB" cx="20%" cy="70%" r="45%">
-              <stop offset="0%" stopColor="#6366f1" stopOpacity="0.05"/>
-              <stop offset="100%" stopColor="#6366f1" stopOpacity="0"/>
-            </radialGradient>
-            <radialGradient id="hgC" cx="80%" cy="60%" r="40%">
-              <stop offset="0%" stopColor="#00ffe0" stopOpacity="0.03"/>
-              <stop offset="100%" stopColor="#00ffe0" stopOpacity="0"/>
-            </radialGradient>
-          </defs>
-          <rect width="900" height="380" fill="url(#hgA)"/>
-          <rect width="900" height="380" fill="url(#hgB)"/>
-          <rect width="900" height="380" fill="url(#hgC)"/>
 
-          {/* Floating tool cards */}
-          <g className="svg-float-a">
-            <rect x="42" y="48" width="80" height="50" rx="11" fill="none" stroke="rgba(0,255,224,0.18)" strokeWidth="0.6"/>
-            <text x="82" y="68" textAnchor="middle" fontFamily="Inter,sans-serif" fontSize="10" fill="rgba(0,255,224,0.55)" fontWeight="700">{'{ }'}</text>
-            <text x="82" y="85" textAnchor="middle" fontFamily="Inter,sans-serif" fontSize="8.5" fill="rgba(255,255,255,0.28)">JSON</text>
-          </g>
-          <g className="svg-float-b">
-            <rect x="776" y="55" width="80" height="50" rx="11" fill="none" stroke="rgba(99,102,241,0.18)" strokeWidth="0.6"/>
-            <text x="816" y="76" textAnchor="middle" fontFamily="Inter,sans-serif" fontSize="10" fill="rgba(99,102,241,0.55)" fontWeight="700">JWT</text>
-            <text x="816" y="92" textAnchor="middle" fontFamily="Inter,sans-serif" fontSize="8.5" fill="rgba(255,255,255,0.28)">Decoder</text>
-          </g>
-          <g className="svg-float-c">
-            <rect x="28" y="230" width="84" height="50" rx="11" fill="none" stroke="rgba(245,158,11,0.15)" strokeWidth="0.6"/>
-            <text x="70" y="251" textAnchor="middle" fontFamily="Inter,sans-serif" fontSize="10" fill="rgba(245,158,11,0.5)" fontWeight="700">Base64</text>
-            <text x="70" y="267" textAnchor="middle" fontFamily="Inter,sans-serif" fontSize="8.5" fill="rgba(255,255,255,0.28)">Encode</text>
-          </g>
-          <g className="svg-float-a" style={{animationDelay:'0.8s'}}>
-            <rect x="784" y="210" width="80" height="50" rx="11" fill="none" stroke="rgba(96,165,250,0.15)" strokeWidth="0.6"/>
-            <text x="824" y="231" textAnchor="middle" fontFamily="Inter,sans-serif" fontSize="9" fill="rgba(96,165,250,0.5)" fontWeight="700">cURL</text>
-            <text x="824" y="248" textAnchor="middle" fontFamily="Inter,sans-serif" fontSize="8.5" fill="rgba(255,255,255,0.28)">→ fetch</text>
-          </g>
-
-          {/* Pulsing dots */}
-          <circle cx="180" cy="88" r="3.5" fill="#00ffe0" opacity="0.22" className="svg-pulse"/>
-          <circle cx="720" cy="108" r="3" fill="#6366f1" opacity="0.22" className="svg-pulse" style={{animationDelay:'0.5s'}}/>
-          <circle cx="100" cy="185" r="2.5" fill="#00ffe0" opacity="0.18" className="svg-pulse" style={{animationDelay:'1s'}}/>
-          <circle cx="800" cy="165" r="2.5" fill="#f59e0b" opacity="0.18" className="svg-pulse" style={{animationDelay:'0.3s'}}/>
-          <circle cx="450" cy="18" r="2" fill="#00ffe0" opacity="0.28" className="svg-pulse" style={{animationDelay:'0.8s'}}/>
-          <circle cx="340" cy="340" r="2" fill="#6366f1" opacity="0.18" className="svg-pulse" style={{animationDelay:'1.2s'}}/>
-
-          {/* Spinning orbit rings */}
-          <g className="svg-spin-cw" style={{transformOrigin:'90px 295px'}}>
-            <circle cx="90" cy="295" r="22" fill="none" stroke="rgba(0,255,224,0.09)" strokeWidth="0.6" strokeDasharray="4 4"/>
-            <circle cx="90" cy="273" r="3" fill="rgba(0,255,224,0.32)"/>
-          </g>
-          <g className="svg-spin-ccw" style={{transformOrigin:'810px 280px'}}>
-            <circle cx="810" cy="280" r="26" fill="none" stroke="rgba(99,102,241,0.08)" strokeWidth="0.6" strokeDasharray="3 5"/>
-            <circle cx="810" cy="254" r="2.5" fill="rgba(99,102,241,0.32)"/>
-          </g>
-
-          {/* Connector lines */}
-          <line x1="185" y1="93" x2="230" y2="145" stroke="rgba(0,255,224,0.07)" strokeWidth="0.6" strokeDasharray="3 4"/>
-          <line x1="715" y1="110" x2="670" y2="148" stroke="rgba(99,102,241,0.07)" strokeWidth="0.6" strokeDasharray="3 4"/>
-
-          {/* Top badge chip */}
-          <rect x="412" y="8" width="76" height="24" rx="6" fill="rgba(0,255,224,0.06)" stroke="rgba(0,255,224,0.14)" strokeWidth="0.6"/>
-          <text x="450" y="24" textAnchor="middle" fontFamily="Inter,monospace" fontSize="8.5" fill="rgba(0,255,224,0.52)">{TOOLS.length}+ tools</text>
-        </svg>
 
         <motion.div 
           className="hero-badge"
-          initial={{ opacity: 0, y: -12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0, scale: 0.9, y: -12 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.5, type: 'spring' }}
+          style={{ 
+            display: 'inline-flex', alignItems: 'center', gap: '8px', 
+            background: 'rgba(0, 232, 122, 0.08)', border: '1px solid rgba(0, 232, 122, 0.2)', 
+            color: 'var(--accent)', padding: '6px 16px', borderRadius: '100px',
+            fontSize: '13px', fontWeight: '600', letterSpacing: '0.5px', marginBottom: '24px'
+          }}
         >
-          🚀 ZeroApiTools — 100% Free &amp; Open Source
+          <span style={{ fontSize: '14px' }}>✸</span> {TOOLS.length}+ Free Utilities · Zero Signup
         </motion.div>
 
         <motion.h1 
           className="hero-title"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.15 }}
+          initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, delay: 0.1, type: 'spring', bounce: 0.4 }}
         >
-          {TOOLS.length}+ <span className="gradient-text">Free Developer Tools</span>
-          <br />
-          That Run In Your Browser
+          The developer toolbox <br />
+          that <span style={{ color: 'var(--accent)' }}>actually works</span>
         </motion.h1>
 
         <motion.p 
@@ -185,237 +195,229 @@ export default function Landing() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          The ultimate collection of fast, private utilities for developers.
-          <br />
-          <strong>No server uploads, no APIs, no signups. Everything executes 100% locally.</strong>
+          Format JSON, generate UUIDs, test regex, convert colors — <br />
+          {TOOLS.length}+ instant tools. No login, no paywall, no BS. Just open and go.
         </motion.p>
 
-        <motion.div 
-          className="hero-features"
-          initial="hidden"
-          animate="visible"
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: 0.1, delayChildren: 0.5 } }
-          }}
-        >
-          {['🔒 100% Private', '⚡ Instant Results', '🚫 No Signup', '🌐 Open Source'].map(f => (
-            <motion.span
-              key={f}
-              className="hero-feature"
-              variants={{
-                hidden: { opacity: 0, scale: 0.85 },
-                visible: { opacity: 1, scale: 1, transition: { type: 'spring', stiffness: 300 } }
-              }}
-            >
-              {f}
-            </motion.span>
-          ))}
-        </motion.div>
       </section>
 
-      {/* ── Main Content Area ── */}
-      {search || viewMode === 'tools' ? (
-        <>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px', padding: '0 40px' }}>
-            <button 
-              className="btn btn-ghost" 
-              onClick={() => { setViewMode('categories'); setSearch(''); setActiveCategory('all'); }}
-              style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
-            >
-              ← Back to Categories
-            </button>
-            <div className="result-count" aria-live="polite" style={{ margin: 0 }}>
-              {search ? (
-                <><strong>{filtered.length}</strong> results for "<em>{search}</em>"</>
-              ) : activeCategory === 'favorites' ? (
-                <><span style={{fontSize: 20}}>⭐</span> <strong>Favorites</strong> — {filtered.length} tools</>
-              ) : activeCategory === 'recents' ? (
-                <><span style={{fontSize: 20}}>🕐</span> <strong>Recently Used</strong> — {filtered.length} tools</>
-              ) : (
-                <><span style={{fontSize: 20}}>{CATEGORIES.find(c => c.id === activeCategory)?.icon}</span> <strong>{CATEGORIES.find(c => c.id === activeCategory)?.name}</strong> — {filtered.length} tools</>
-              )}
+      {/* ── Tool Library Section ── */}
+      <section style={{ padding: '64px 5vw', maxWidth: '1600px', margin: '0 auto', minHeight: '80vh' }} id="tools-section">
+        {viewMode === 'categories' ? (
+          <>
+            <div style={{ marginBottom: '48px', textAlign: 'center' }}>
+              <div style={{ color: 'var(--accent)', fontSize: '12px', fontWeight: '700', letterSpacing: '1px', marginBottom: '8px' }}>TOOL LIBRARY</div>
+              <h2 style={{ fontSize: '48px', fontFamily: 'var(--font-display)', fontWeight: '400', color: 'var(--text-1)', letterSpacing: '1px', margin: 0, textTransform: 'uppercase' }}>
+                Pick a Category
+              </h2>
             </div>
-          </div>
+            
+            <div className="tools-grid">
+              {CATEGORIES.filter(cat => cat.id !== 'all').map((cat, i) => {
+                const count = TOOLS.filter(t => t.category === cat.id).length;
+                return (
+                  <AnimatedCategoryCard key={cat.id} index={i}>
+                    <div 
+                      className="category-card"
+                      onClick={() => {
+                        setActiveCategory(cat.id);
+                        setViewMode('tools');
+                        setTimeout(() => {
+                          document.getElementById('tools-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 50);
+                      }}
+                    >
+                      <div className="category-card-icon">{cat.icon}</div>
+                      <h3 className="category-card-title">{cat.name}</h3>
+                      <div className="category-card-count">{count} Tools inside</div>
+                    </div>
+                  </AnimatedCategoryCard>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <>
+            <div style={{ marginBottom: '48px', display: 'flex', alignItems: 'center', gap: '24px' }}>
+              <button 
+                onClick={() => {
+                  setViewMode('categories');
+                  setActiveCategory('all');
+                }}
+                className="btn btn-secondary"
+                style={{ padding: '8px 16px', borderRadius: '100px', background: 'var(--bg-surface)' }}
+              >
+                ← Back to Categories
+              </button>
+              <h2 style={{ fontSize: '32px', fontFamily: 'var(--font-display)', fontWeight: '400', color: 'var(--text-1)', letterSpacing: '1px', margin: 0, textTransform: 'uppercase' }}>
+                {CATEGORIES.find(c => c.id === activeCategory)?.name || 'Tools'}
+              </h2>
+            </div>
 
-          {filtered.length > 0 ? (
-            <>
-              <div className="tools-grid">
-                {filtered.map((tool, i) => (
-                  <ToolCard
-                    key={tool.id} tool={tool} onSelect={selectTool}
-                    isFavorite={favorites.includes(tool.id)} onToggleFavorite={toggleFavorite}
-                    usageCount={usageCount[tool.id] || 0} visible={true} index={i}
-                  />
-                ))}
+            {filtered.length > 0 ? (
+              <>
+                <div className="tools-grid">
+                  {filtered.map((tool, i) => (
+                    <ToolCard
+                      key={tool.id} tool={tool} onSelect={selectTool}
+                      isFavorite={favorites.includes(tool.id)} onToggleFavorite={toggleFavorite}
+                      usageCount={usageCount[tool.id] || 0} visible={true} index={i}
+                    />
+                  ))}
+                </div>
+                {!search && displayedCount < TOOLS.filter(t => t.category === activeCategory || activeCategory === 'all').length && (
+                  <div ref={loadMoreRef} style={{ height: 20 }} aria-hidden="true" />
+                )}
+              </>
+            ) : (
+              <div className="no-results">
+                <div className="no-results-icon">🔍</div>
+                <div className="no-results-text">No tools found</div>
               </div>
-              {!search && displayedCount < TOOLS.filter(t => t.category === activeCategory).length && (
-                <div ref={loadMoreRef} style={{ height: 20 }} aria-hidden="true" />
-              )}
-            </>
-          ) : (
-            <div className="no-results">
-              <div className="no-results-icon">🔍</div>
-              <div className="no-results-text">No tools found for "{search}"</div>
-              <div className="no-results-hint">Try: json, base64, curl, chmod, cron...</div>
-              <button className="btn btn-secondary" onClick={() => setSearch('')}>Clear Search</button>
+            )}
+          </>
+        )}
+      </section>
+
+      {/* ── PRO MAX Features Row ── */}
+      <motion.section 
+        className="features-grid" 
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        style={{
+          display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', 
+          gap: '32px', padding: '64px 40px', borderTop: '1px solid var(--border-subtle)',
+          borderBottom: '1px solid var(--border-subtle)', background: 'var(--glass-bg)',
+          backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
+        }}
+      >
+        {[
+          { icon: '⚡', color: '#f59e0b', title: 'Instant results', desc: 'Every tool runs client-side or edge. Results in under 100ms, no cold starts.' },
+          { icon: '🔒', color: '#10b981', title: 'Private by default', desc: 'Your data never hits our servers. Processing happens in your browser.' },
+          { icon: '🄓', color: '#3b82f6', title: 'Always free', desc: 'MIT licensed. No plans, no limits, no credit card. Open source forever.' },
+        ].map((f, i) => (
+          <motion.div
+            key={f.title}
+            className="feature-item"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: i * 0.1, ease: 'easeOut' }}
+            style={i > 0 ? { borderLeft: '1px solid var(--border-subtle)', paddingLeft: '32px' } : {}}
+            whileHover={{ scale: 1.03 }}
+          >
+            <div style={{ color: f.color, fontSize: '28px', marginBottom: '16px' }}>{f.icon}</div>
+            <h3 style={{ color: 'var(--text-1)', fontSize: '16px', fontWeight: '700', marginBottom: '8px' }}>{f.title}</h3>
+            <p style={{ color: 'var(--text-3)', fontSize: '14px', lineHeight: '1.6' }}>{f.desc}</p>
+          </motion.div>
+        ))}
+      </motion.section>
+
+      {/* ── Interactive Terminal Simulator ── */}
+      <motion.section 
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1 }}
+        style={{ padding: '100px 5vw', maxWidth: '1400px', margin: '0 auto', overflow: 'hidden', position: 'relative', textAlign: 'center', zIndex: 1 }}
+      >
+        <div style={{ color: 'var(--accent)', fontSize: '12px', fontWeight: '700', letterSpacing: '1px', marginBottom: '12px' }}>POWERFUL & SECURE</div>
+        <h2 style={{ fontSize: '40px', fontFamily: 'var(--font-display)', fontWeight: '400', color: 'var(--text-1)', letterSpacing: '1px', marginBottom: '24px', textTransform: 'uppercase' }}>
+          Execute Locally. Process Instantly.
+        </h2>
+        <p style={{ color: 'var(--text-3)', fontSize: '18px', maxWidth: '600px', margin: '0 auto 64px auto', lineHeight: '1.6' }}>
+          ZeroApiTools runs entirely in your browser. No server uploads. No API delays. Just blazing fast execution right where you are.
+        </p>
+
+        <TerminalSimulator />
+      </motion.section>
+
+      {/* ── About Us Section ── */}
+      <motion.section 
+        className="about-section"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        style={{ padding: '100px 5vw', maxWidth: '1400px', margin: '0 auto' }}
+      >
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '64px', alignItems: 'center' }}>
+          
+          <div style={{ flex: '1 1 400px' }}>
+            <div style={{ color: 'var(--accent)', fontSize: '12px', fontWeight: '700', letterSpacing: '1px', marginBottom: '12px' }}>THE MISSION</div>
+            <h2 style={{ fontSize: '48px', fontFamily: 'var(--font-display)', fontWeight: '400', color: 'var(--text-1)', letterSpacing: '1px', marginBottom: '24px', textTransform: 'uppercase', lineHeight: '1.1' }}>
+              Built for Developers. <br/> Respect for Privacy.
+            </h2>
+            <p style={{ color: 'var(--text-3)', fontSize: '18px', lineHeight: '1.8', marginBottom: '20px' }}>
+              We were tired of searching for simple developer tools only to be hit with paywalls, intrusive ads, and the constant fear of our sensitive JSON, API keys, or JWT tokens being uploaded to unknown servers.
+            </p>
+            <p style={{ color: 'var(--text-3)', fontSize: '18px', lineHeight: '1.8', marginBottom: '32px' }}>
+              That's why we created <strong>ZeroApiTools</strong>. A beautifully crafted, lightning-fast suite of over 67+ tools that execute 100% locally in your browser. No data leaves your machine. Ever.
+            </p>
+            <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+              <motion.button 
+                whileHover={{ scale: 1.05 }} 
+                whileTap={{ scale: 0.95 }}
+                className="btn btn-secondary" 
+                onClick={() => document.getElementById('tools-section')?.scrollIntoView({ behavior: 'smooth' })}
+                style={{ padding: '12px 24px', fontSize: '16px', borderRadius: '100px' }}
+              >
+                Explore Tools
+              </motion.button>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-4)', fontSize: '14px' }}>
+                <span className="live-dot"></span> Live & Open Source
+              </div>
             </div>
-          )}
-        </>
-      ) : (
-        <>
-          <div className="section-header" style={{ marginTop: '20px', padding: '0 40px' }}>
-            <h2 className="section-title">📂 Browse by Category</h2>
           </div>
-          <div className="category-grid">
-            {favoriteTools.length > 0 && (
-              <AnimatedCategoryCard index={0}>
-                <div 
-                  className="category-card"
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => { setActiveCategory('favorites'); setViewMode('tools'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                >
-                  <div className="category-icon-wrapper cat-bg-amber">⭐</div>
-                  <h3 className="category-title">Favorites</h3>
-                  <p className="category-count">{favoriteTools.length} tools</p>
-                </div>
-              </AnimatedCategoryCard>
-            )}
-            {recentTools.length > 0 && (
-              <AnimatedCategoryCard index={1}>
-                <div 
-                  className="category-card"
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => { setActiveCategory('recents'); setViewMode('tools'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                >
-                  <div className="category-icon-wrapper cat-bg-purple">🕐</div>
-                  <h3 className="category-title">Recently Used</h3>
-                  <p className="category-count">{recentTools.length} tools</p>
-                </div>
-              </AnimatedCategoryCard>
-            )}
-            {CATEGORIES.filter(c => c.id !== 'all').map((cat, i) => {
-              const count = TOOLS.filter(t => t.category === cat.id).length;
-              if (count === 0) return null;
-              return (
-                <AnimatedCategoryCard key={cat.id} index={i + 2}>
-                  <div 
-                    className="category-card"
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => { setActiveCategory(cat.id); setViewMode('tools'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                  >
-                    <div className={`category-icon-wrapper cat-bg-${getCategoryColor(cat.id)}`}>{cat.icon}</div>
-                    <h3 className="category-title">{cat.name}</h3>
-                    <p className="category-count">{count} tools</p>
-                  </div>
-                </AnimatedCategoryCard>
-              );
-            })}
-          </div>
-        </>
-      )}
 
-      {/* ── Trust Bar ── */}
-      <section className="trust-bar">
-        <div className="trust-item">🔐 <strong>Zero Data Upload</strong> — Everything runs locally</div>
-        <div className="trust-item">🚫 <strong>No Account</strong> — Start using instantly</div>
-        <div className="trust-item">📡 <strong>No Tracking</strong> — No analytics on your input</div>
-        <div className="trust-item">⚡ <strong>No Rate Limits</strong> — Use as much as you want</div>
-      </section>
+          <motion.div 
+            style={{ flex: '1 1 400px', position: 'relative' }}
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+          >
+            <div style={{ position: 'absolute', inset: '-20px', background: 'radial-gradient(circle at 50% 50%, var(--accent-glow) 0%, transparent 70%)', zIndex: 0, filter: 'blur(30px)' }} />
+            <img 
+              src="/images/about-hero.png" 
+              alt="ZeroApiTools Futuristic Developer Environment" 
+              style={{ width: '100%', borderRadius: '24px', position: 'relative', zIndex: 1, border: '1px solid var(--border-primary)', boxShadow: '0 20px 60px rgba(0,0,0,0.5)' }} 
+            />
+          </motion.div>
 
-      {/* ── SEO Content Section ── */}
-      <section className="seo-content" style={{ padding: '60px 40px 40px', color: 'var(--text-secondary)', lineHeight: '1.8' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '48px', alignItems: 'start' }}>
-          <div>
-            <h2 style={{ color: 'var(--text-heading)', marginBottom: '20px', fontSize: '2rem' }}>Your All-In-One Developer Utility Belt</h2>
-            <p style={{ marginBottom: '16px' }}>
-              Welcome to ZeroApiTools, the ultimate collection of <strong>free developer tools</strong> designed to run 100% locally in your browser. Whether you need a <strong>JSON formatter</strong>, a <strong>Base64 encoder</strong>, or a quick way to convert <strong>cURL to Fetch</strong>, we have you covered. Our platform ensures that your sensitive data never leaves your machine, providing unparalleled privacy and speed.
-            </p>
-            <h3 style={{ color: 'var(--text-heading)', marginTop: '30px', marginBottom: '15px', fontSize: '1.5rem' }}>Why Use Client-Side Developer Tools?</h3>
-            <p style={{ marginBottom: '16px' }}>
-              Traditional online tools often send your data to remote servers for processing. This means your proprietary code, private API keys, and sensitive JWT tokens could be logged, stored, or intercepted. ZeroApiTools changes the game by leveraging your browser’s native capabilities. 
-            </p>
-            <ul style={{ paddingLeft: '20px', marginBottom: '16px' }}>
-              <li style={{ marginBottom: '8px' }}><strong>Instant Execution:</strong> No waiting for server requests. Format massive JSON files instantly.</li>
-              <li style={{ marginBottom: '8px' }}><strong>100% Privacy:</strong> Since everything is client-side, your data remains yours.</li>
-              <li style={{ marginBottom: '8px' }}><strong>Offline Access:</strong> Once loaded, our tools work even without an internet connection.</li>
-            </ul>
-          </div>
-          <div>
-            <h3 style={{ color: 'var(--text-heading)', marginBottom: '15px', fontSize: '1.5rem' }}>Popular Tools & Examples</h3>
-            <p style={{ marginBottom: '16px' }}>
-              Developers rely on our platform daily for a variety of tasks. Here are some of our most popular utilities:
-            </p>
-            <ul style={{ paddingLeft: '20px', marginBottom: '16px' }}>
-              <li style={{ marginBottom: '8px' }}><strong>JSON Formatter & Validator:</strong> Paste minified JSON and instantly beautify it. Perfect for debugging API responses.</li>
-              <li style={{ marginBottom: '8px' }}><strong>Base64 Encode/Decode:</strong> Easily convert text or files to Base64 strings, essential for web development and data embedding.</li>
-              <li style={{ marginBottom: '8px' }}><strong>CSS Generators:</strong> Create stunning gradients, glassmorphism effects, and box shadows with our visual editors, then copy the CSS directly.</li>
-              <li style={{ marginBottom: '8px' }}><strong>JWT Decoder:</strong> Paste your JSON Web Tokens to safely read their payload and verify their expiration locally.</li>
-            </ul>
-            <p style={{ marginTop: '20px', padding: '15px', background: 'rgba(0, 255, 224, 0.05)', borderRadius: '8px', border: '1px solid rgba(0, 255, 224, 0.2)' }}>
-              📚 <strong>Want to learn more?</strong> <a href="/blog-post/complete-guide-json-formatting" onClick={(e) => { e.preventDefault(); selectTool('blog-post/complete-guide-json-formatting'); window.scrollTo(0,0); }} style={{ color: '#00ffe0', textDecoration: 'none', fontWeight: 'bold' }}>Check out our Complete Guide to JSON Formatting and Validation</a> to see how our tools can save you hours of debugging time.
-            </p>
-          </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* ── FAQ Section ── */}
-      <section className="seo-content" id="faq" aria-labelledby="faq-heading" style={{ padding: '0 40px 60px', color: 'var(--text-secondary)', lineHeight: '1.8' }}>
-        <h2 id="faq-heading" style={{ color: 'var(--text-heading)', marginBottom: '30px', fontSize: '2rem' }}>Frequently Asked Questions</h2>
+      {/* ── CTA Section ── */}
+      <motion.section 
+        initial={{ opacity: 0, scale: 0.97 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        style={{ textAlign: 'center', padding: '120px 20px', borderTop: '1px solid var(--border-subtle)' }}
+      >
+        <div className="cta-glass-container">
+          <div style={{ color: 'var(--accent)', fontSize: '12px', fontWeight: '700', letterSpacing: '1px', marginBottom: '16px' }}>READY?</div>
+          <h2 style={{ fontFamily: 'var(--font-display)', textTransform: 'uppercase', fontSize: 'clamp(50px, 8vw, 80px)', lineHeight: '0.95', fontWeight: '400', marginBottom: '24px', color: 'var(--text-1)', letterSpacing: '1px', textShadow: '0 4px 24px var(--shadow-glow)' }}>
+            Bookmark it.<br/>Never search for a tool again.
+          </h2>
+          <p style={{ color: 'var(--text-3)', fontSize: '18px', marginBottom: '40px' }}>
+            Free forever. Open source. No account. Just tools that work.
+          </p>
+        <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
+          <motion.button 
+            whileHover={{ scale: 1.05 }} 
+            whileTap={{ scale: 0.95 }}
+            className="btn btn-primary btn-lg" 
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
+            Start Using — It's Free
+          </motion.button>
 
-
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-          <div className="faq-item" style={{ padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
-            <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.1rem' }}>How do I format or beautify JSON online for free?</h3>
-            <p>Paste your raw or minified JSON into ZeroApiTools' free <a href="/json-formatter" onClick={(e) => { e.preventDefault(); selectTool('json-formatter'); window.scrollTo(0,0); }} style={{ color: '#00ffe0' }}>JSON Formatter & Beautifier</a>. It instantly indents, validates, and highlights your JSON — no signup, no server upload. Everything runs locally in your browser.</p>
-          </div>
-
-          <div className="faq-item" style={{ padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
-            <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.1rem' }}>How do I encode or decode Base64 online?</h3>
-            <p>Use the free <a href="/base64" onClick={(e) => { e.preventDefault(); selectTool('base64'); window.scrollTo(0,0); }} style={{ color: '#00ffe0' }}>Base64 Encoder/Decoder</a> on ZeroApiTools. Just paste your text to get the Base64 string instantly — or paste a Base64 string to decode it back. No data is ever sent to a server.</p>
-          </div>
-
-          <div className="faq-item" style={{ padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
-            <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.1rem' }}>How do I decode a JWT token online? (JWT token kaise decode kare?)</h3>
-            <p>Open the <a href="/jwt-decoder" onClick={(e) => { e.preventDefault(); selectTool('jwt-decoder'); window.scrollTo(0,0); }} style={{ color: '#00ffe0' }}>JWT Decoder</a> on ZeroApiTools, paste your token, and instantly see the header, payload, and expiry. Since decoding happens 100% in your browser, your production tokens remain completely private.</p>
-          </div>
-
-          <div className="faq-item" style={{ padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
-            <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.1rem' }}>What is the best free regex tester online for beginners?</h3>
-            <p>ZeroApiTools' <a href="/regex-tester" onClick={(e) => { e.preventDefault(); selectTool('regex-tester'); window.scrollTo(0,0); }} style={{ color: '#00ffe0' }}>Regex Tester</a> shows live match highlighting as you type your pattern, making it ideal for beginners and pros alike. It supports all standard JS regex flags and runs entirely client-side.</p>
-          </div>
-
-          <div className="faq-item" style={{ padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
-            <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.1rem' }}>How do I compress an image online for free without uploading it to a server?</h3>
-            <p>ZeroApiTools' <a href="/image-compress" onClick={(e) => { e.preventDefault(); selectTool('image-compress'); window.scrollTo(0,0); }} style={{ color: '#00ffe0' }}>Image Compressor</a> reduces image file sizes using your browser's native APIs — your photos never leave your device. Supports JPEG, PNG, and WebP output with no quality compromise.</p>
-          </div>
-
-          <div className="faq-item" style={{ padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
-            <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.1rem' }}>Is there a free CSS generator and box shadow generator online?</h3>
-            <p>Yes — ZeroApiTools has a full suite of free CSS generators including a <a href="/gradient" onClick={(e) => { e.preventDefault(); selectTool('gradient'); window.scrollTo(0,0); }} style={{ color: '#00ffe0' }}>CSS Gradient Generator</a>, <a href="/box-shadow" onClick={(e) => { e.preventDefault(); selectTool('box-shadow'); window.scrollTo(0,0); }} style={{ color: '#00ffe0' }}>Box Shadow Generator</a>, Glassmorphism Generator, and Border Radius tool. All free, all visual, all copy-paste ready.</p>
-          </div>
-
-          <div className="faq-item" style={{ padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
-            <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.1rem' }}>How do I convert a cURL command to JavaScript fetch or Axios online?</h3>
-            <p>Use ZeroApiTools' free <a href="/curl-to-fetch" onClick={(e) => { e.preventDefault(); selectTool('curl-to-fetch'); window.scrollTo(0,0); }} style={{ color: '#00ffe0' }}>cURL to Fetch Converter</a>. Paste your cURL command and get the equivalent JavaScript fetch() or Axios code instantly — perfect for API testing and frontend development.</p>
-          </div>
-
-          <div className="faq-item" style={{ padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
-            <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.1rem' }}>How do I calculate Linux file permissions (chmod) online?</h3>
-            <p>ZeroApiTools' <a href="/chmod-calc" onClick={(e) => { e.preventDefault(); selectTool('chmod-calc'); window.scrollTo(0,0); }} style={{ color: '#00ffe0' }}>Chmod Calculator</a> lets you toggle read/write/execute permissions visually for Owner, Group, and Others — and instantly shows the numeric chmod value (like 755 or 644). No Linux knowledge required.</p>
-          </div>
-
-          <div className="faq-item" style={{ padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
-            <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.1rem' }}>Is ZeroApiTools safe? Does it store or upload my data?</h3>
-            <p>ZeroApiTools is 100% client-side — every single tool runs in your browser using JavaScript. No data is ever uploaded to a server, stored, or logged anywhere. It's the safest way to use developer tools online, especially for sensitive payloads like JWTs, API keys, and database dumps.</p>
-          </div>
-
-          <div className="faq-item" style={{ padding: '20px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-primary)' }}>
-            <h3 style={{ color: 'var(--text-heading)', marginBottom: '10px', fontSize: '1.1rem' }}>How does ZeroApiTools compare to paid developer tools?</h3>
-            <p>ZeroApiTools offers {TOOLS.length}+ tools completely free with no account, no rate limits, and no data upload — features that many paid tools charge for. The key advantage is that everything processes locally in your browser rather than on a remote cloud server, giving you both speed and privacy.</p>
-          </div>
         </div>
-      </section>
+        </div>
+      </motion.section>
     </div>
   );
 }
@@ -455,15 +457,16 @@ export const ToolCard = memo(function ToolCard({ tool, onSelect, isFavorite, onT
       const y = e.clientY - rect.top;
       const cx = rect.width / 2;
       const cy = rect.height / 2;
-      const rotX = ((y - cy) / cy) * -10;
-      const rotY = ((x - cx) / cx) * 10;
-      const glareX = (x / rect.width) * 100;
-      const glareY = (y / rect.height) * 100;
+      const rotX = ((y - cy) / cy) * -8;
+      const rotY = ((x - cx) / cx) * 8;
       cardRef.current.style.transform =
-        `perspective(600px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(8px) scale(1.02)`;
+        `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-8px) scale(1.02)`;
+      // Mouse-tracked spotlight via CSS custom props
+      cardRef.current.style.setProperty('--mouse-x', x + 'px');
+      cardRef.current.style.setProperty('--mouse-y', y + 'px');
       if (glareRef.current) {
         glareRef.current.style.background =
-          `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.12) 0%, transparent 60%)`;
+          `radial-gradient(circle at ${(x/rect.width)*100}% ${(y/rect.height)*100}%, rgba(0,232,122,0.10) 0%, transparent 60%)`;
         glareRef.current.style.opacity = '1';
       }
     });
@@ -472,31 +475,30 @@ export const ToolCard = memo(function ToolCard({ tool, onSelect, isFavorite, onT
   const handleMouseLeave = useCallback(() => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
     if (!cardRef.current) return;
-    cardRef.current.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) translateZ(0px) scale(1)';
+    cardRef.current.style.transform = '';
     if (glareRef.current) glareRef.current.style.opacity = '0';
   }, []);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-40px' });
 
   return (
-    <a
-      href={`/${tool.id}`}
-      ref={cardRef}
-      className={`tool-card tool-card-3d ${visible ? 'visible' : ''} ${tool.category === 'unique' ? 'tool-card-unique' : ''}`}
-      data-id={tool.id}
-      onClick={(e) => { e.preventDefault(); onSelect(tool.id); }}
-      id={`tool-${tool.id}`}
-      style={{ animationDelay: `${Math.min(index * 30, 300)}ms` }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      aria-label={`${tool.name} — ${tool.desc}`}
+    <motion.div
+      ref={ref}
+      className={`tool-card ${visible ? 'visible' : ''}`}
+      initial={{ opacity: 0, scale: 0.95, y: 20 }}
+      animate={isInView ? { opacity: 1, scale: 1, y: 0 } : {}}
+      transition={{ duration: 0.4, delay: index * 0.04, ease: 'easeOut' }}
+      whileHover={{ y: -5, transition: { duration: 0.2 } }}
+      onClick={() => onSelect(tool.id)}
+      style={{ cursor: 'pointer' }}
     >
-      <div ref={glareRef} className="card-glare" />
       {tool.category === 'unique' && <div className="unique-badge">✨ Unique</div>}
 
       <div className="tool-card-top">
         <div className={`tool-card-icon ${getCategoryColor(tool.category)}`}>{tool.icon}</div>
         <button
           className={`tool-fav-btn ${isFavorite ? 'active' : ''}`}
-          onClick={e => { e.preventDefault(); e.stopPropagation(); onToggleFavorite(tool.id); }}
+          onClick={e => { e.stopPropagation(); onToggleFavorite(tool.id); }}
           title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
           aria-label={isFavorite ? 'Remove from favorites' : 'Save to favorites'}
         >
@@ -511,9 +513,10 @@ export const ToolCard = memo(function ToolCard({ tool, onSelect, isFavorite, onT
         <span className={`tool-card-tag ${tool.category}`}>{getCategoryLabel(tool.category)}</span>
         {usageCount > 0 && <span className="tool-usage-count">{usageCount}× used</span>}
       </div>
-    </a>
+    </motion.div>
   );
 });
+
 
 export function getCategoryColor(cat) {
   const map = { text: 'emerald', code: 'cyan', converter: 'emerald', css: 'cyan', image: 'emerald', security: 'cyan', seo: 'emerald', unique: 'unique', calculator: 'amber', pdf: 'cyan' };

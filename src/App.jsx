@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect, createContext, useContext } from 'react';
+import { MOCK_BLOGS } from './data/blogs.js';
 import './index.css';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -280,8 +281,16 @@ function App() {
       const metaDesc = document.querySelector('meta[name="description"]');
       if (metaDesc) metaDesc.content = 'Insights, guides, and tutorials generated for developers.';
     } else if (currentTool?.startsWith('blog-post/')) {
+      const slug = currentTool.split('/')[1];
+      const blog = MOCK_BLOGS.find(b => b.slug === slug);
       window.history.pushState(null, '', `/${currentTool}`);
-      document.title = 'Article - ZeroApiTools | Free Developer Tools';
+      if (blog) {
+        document.title = `${blog.title} - ZeroApiTools Blog`;
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) metaDesc.content = blog.excerpt || 'Read this article on ZeroApiTools Blog.';
+      } else {
+        document.title = 'Article - ZeroApiTools | Free Developer Tools';
+      }
     } else if (currentTool) {
       const tool = TOOLS.find(t => t.id === currentTool);
       if (tool) {
@@ -374,6 +383,15 @@ function App() {
           }
         });
       }
+    }
+    
+    // Trigger Google Tag Manager pageview event for SPA route change
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        event: 'pageview',
+        page_path: window.location.pathname,
+        page_title: document.title
+      });
     }
   }, [currentTool]);
 
@@ -534,7 +552,7 @@ function App() {
               </div>
             </React.Suspense>
           </div>
-          <ToolFaq toolId={currentTool} />
+          <ToolFaq toolId={currentTool} toolName={activeTool?.name} />
           <RelatedTools 
             currentToolId={currentTool} 
             onSelect={selectTool} 

@@ -1,19 +1,18 @@
 import React, { useMemo } from 'react';
-import { TOOLS } from '../../App';
 import { ToolCard } from '../Landing';
 
-export default function RelatedTools({ currentToolId, onSelect, favorites, toggleFavorite, usageCount }) {
+export default function RelatedTools({ currentToolId, allTools = [], onSelect, favorites, toggleFavorite, usageCount }) {
   const related = useMemo(() => {
-    const current = TOOLS.find(t => t.id === currentToolId);
+    const current = allTools.find(t => t.id === currentToolId);
     if (!current) return [];
     
     // Find tools in the same category, excluding the current tool
-    const sameCategory = TOOLS.filter(t => t.category === current.category && t.id !== currentToolId);
+    const sameCategory = allTools.filter(t => t.category === current.category && t.id !== currentToolId);
     
     // Shuffle and pick up to 3 tools
     const shuffled = [...sameCategory].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, 3);
-  }, [currentToolId]);
+  }, [currentToolId, allTools]);
 
   if (related.length === 0) return null;
 

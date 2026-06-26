@@ -3,9 +3,16 @@ import ReactMarkdown from 'react-markdown';
 import toolHowToData from '../data/toolHowTo.json';
 import { TOOL_FAQS, GENERIC_FAQS } from '../data/faqs.js';
 
-export default function ToolFaq({ toolId }) {
+export default function ToolFaq({ toolId, toolName = 'this tool' }) {
   const [openIndex, setOpenIndex] = useState(null);
-  const faqs = TOOL_FAQS[toolId] || GENERIC_FAQS;
+
+  const dynamicGenericFaqs = [
+    { q: `Is the ${toolName} free to use?`, a: `Yes! The ${toolName} on ZeroApiTools is 100% free with no signup required.` },
+    { q: `Is my data safe when using the ${toolName}?`, a: `Absolutely. All processing for the ${toolName} happens locally in your browser. No data is ever sent to any server.` },
+    { q: `Does the ${toolName} work on mobile?`, a: `Yes! The ${toolName} is fully responsive and works perfectly on all devices — desktop, tablet, and mobile.` },
+  ];
+
+  const faqs = TOOL_FAQS[toolId] || dynamicGenericFaqs;
   const howToMarkdown = toolHowToData[toolId];
 
   return (

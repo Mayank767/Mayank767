@@ -2,34 +2,32 @@ import React from 'react';
 
 export default function Terms() {
   return (
-    <div className="tool-page animate-in" style={{ maxWidth: '800px', margin: '0 auto' }}>
-      <div className="tool-header">
-        <div className="tool-header-left">
-          <h1 className="tool-title">⚖️ Terms of Service</h1>
-          <p className="tool-description">The rules and guidelines for using ZeroApiTools.</p>
-        </div>
+    <div className="legal-container animate-in">
+      <div className="legal-header">
+        <h1 className="legal-title">Terms of Service</h1>
+        <p className="legal-subtitle">The rules of the game.</p>
       </div>
-      <div className="tool-body" style={{ padding: '30px', lineHeight: '1.6', color: 'var(--text-secondary)' }}>
-        <p style={{ marginBottom: '20px' }}><strong>Last Updated:</strong> June 2026</p>
+      <div className="legal-body">
+        <p><strong>Last Updated:</strong> June 2026</p>
         
-        <h2 style={{ color: 'var(--text-heading)', margin: '30px 0 15px' }}>1. Acceptance of Terms</h2>
-        <p style={{ marginBottom: '20px' }}>
-          By accessing and using ZeroApiTools, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by these terms, please do not use this service.
+        <h2>1. Acceptance of Terms</h2>
+        <p>
+          By accessing and using ZeroApiTools, you agree to be bound by these Terms of Service. If you do not agree with any of these terms, you are prohibited from using or accessing this site.
         </p>
 
-        <h2 style={{ color: 'var(--text-heading)', margin: '30px 0 15px' }}>2. Description of Service</h2>
-        <p style={{ marginBottom: '20px' }}>
-          ZeroApiTools provides a collection of browser-based utility tools for developers and users. The tools are provided "as is" and without warranty of any kind. We reserve the right to modify, suspend, or discontinue any tool at any time without notice.
+        <h2>2. Use License</h2>
+        <p>
+          ZeroApiTools provides a collection of free, client-side developer utilities. You are granted permission to use these tools for any personal or commercial project. However, you may not systematically scrape, reproduce, or redistribute the core engine of ZeroApiTools without explicit permission.
         </p>
 
-        <h2 style={{ color: 'var(--text-heading)', margin: '30px 0 15px' }}>3. Disclaimer of Warranties</h2>
-        <p style={{ marginBottom: '20px' }}>
-          The use of the service is at your sole risk. The service is provided on an "as is" and "as available" basis. ZeroApiTools expressly disclaims all warranties of any kind, whether express or implied. We do not guarantee that the generated code, formatted text, or converted files are 100% accurate or suitable for your specific use cases. Always verify the output.
+        <h2>3. Disclaimer of Warranties</h2>
+        <p>
+          The materials and tools on ZeroApiTools are provided on an 'as is' basis. We make no warranties, expressed or implied, and hereby disclaim and negate all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property.
         </p>
 
-        <h2 style={{ color: 'var(--text-heading)', margin: '30px 0 15px' }}>4. Limitation of Liability</h2>
-        <p style={{ marginBottom: '20px' }}>
-          ZeroApiTools shall not be liable for any direct, indirect, incidental, special, consequential or exemplary damages resulting from the use or inability to use the service.
+        <h2>4. Limitations of Liability</h2>
+        <p>
+          In no event shall ZeroApiTools or its developers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the tools provided, even if we have been notified orally or in writing of the possibility of such damage.
         </p>
       </div>
     </div>
