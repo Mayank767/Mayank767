@@ -182,7 +182,17 @@ export const TOOL_FAQS = {
     { q: 'What is a CSS beautifier online?', a: 'A CSS beautifier (CSS formatter) takes minified or unstructured CSS and adds proper indentation, line breaks between properties, and consistent formatting — making stylesheets readable and maintainable.' },
     { q: 'Is this CSS code minifier free?', a: 'Yes — 100% free, no signup. This tool works both as a CSS beautifier and CSS minifier. Minify mode removes all whitespace to reduce file size for production.' },
     { q: 'Does this CSS beautifier upload my code?', a: 'No. All formatting happens in your browser. Your CSS code is never uploaded to any server — safe for proprietary stylesheets.' },
-    { q: 'Can I use this to format SCSS or Sass?', a: 'This tool is optimized for standard CSS. For SCSS/Sass, the beautification may work partially since SCSS is a superset of CSS, but nested rules may not format perfectly.' },
+  ],
+  'box-shadow': [
+    { q: 'What is a CSS box shadow generator?', a: 'A CSS box shadow generator is an interactive visual editor that allows you to configure horizontal offset, vertical offset, blur radius, spread radius, color, and inset shadows, generating clean copy-paste CSS code instantly.' },
+    { q: 'How do I generate a smooth CSS box shadow?', a: 'To create a modern, smooth box shadow, use a subtle color (like rgba(0, 0, 0, 0.08)), a higher blur radius (15px–30px), and a slightly positive vertical offset (8px–16px). You can fine-tune all these parameters with our visual sliders.' },
+    { q: 'Is this CSS box shadow generator free?', a: 'Yes! The Box Shadow Generator on ZeroApiTools is completely free to use without registration or server uploads. The generated CSS works with all modern frameworks including React, Vue, and Tailwind.' },
+    { q: 'What is the difference between blur and spread in box-shadow?', a: 'Blur radius softens and expands the shadow edges outward smoothly, while spread radius physically increases or decreases the solid size of the shadow before blur is applied.' },
+  ],
+  'percentage-calc': [
+    { q: 'How do I calculate percentage difference?', a: 'Percentage difference is calculated by taking the absolute difference between two numbers, dividing by the average of the two numbers, and multiplying by 100: |V1 - V2| / ((V1 + V2)/2) × 100.' },
+    { q: 'How to calculate percentage increase or decrease?', a: 'Percentage Change = ((New Value - Old Value) / Old Value) × 100. If the result is positive, it is an increase; if negative, it is a decrease.' },
+    { q: 'Is this percentage calculator free to use?', a: 'Yes, 100% free with instant calculation in your browser. No signup, no ads, and no data is sent to external servers.' },
   ],
 };
 

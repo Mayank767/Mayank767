@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useApp } from '../App';
 import { TOOLS } from '../data/toolsList';
 
@@ -57,7 +57,8 @@ export default function Navbar({ currentTool, onGoHome, onSelectTool }) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  useEffect(() => { setActiveIndex(-1); }, [search]);
+  // Reset active index when search changes — use queueMicrotask to avoid synchronous setState in effect
+  useEffect(() => { queueMicrotask(() => setActiveIndex(-1)); }, [search]);
 
   const selectTool = (toolId) => {
     onSelectTool(toolId);

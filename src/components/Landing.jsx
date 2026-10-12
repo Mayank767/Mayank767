@@ -12,11 +12,11 @@ class ThreeDErrorBoundary extends React.Component {
     super(props);
     this.state = { hasError: false };
   }
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError() {
     return { hasError: true };
   }
-  componentDidCatch(error, errorInfo) {
-    console.warn("3D Animation failed to load:", error);
+  componentDidCatch(err) {
+    console.warn('3D Animation failed to load:', err);
   }
   render() {
     if (this.state.hasError) {
@@ -482,38 +482,44 @@ export const ToolCard = memo(function ToolCard({ tool, onSelect, isFavorite, onT
   const isInView = useInView(ref, { once: true, margin: '-40px' });
 
   return (
-    <motion.div
-      ref={ref}
-      className={`tool-card ${visible ? 'visible' : ''}`}
-      initial={{ opacity: 0, scale: 0.95, y: 20 }}
-      animate={isInView ? { opacity: 1, scale: 1, y: 0 } : {}}
-      transition={{ duration: 0.4, delay: index * 0.04, ease: 'easeOut' }}
-      whileHover={{ y: -5, transition: { duration: 0.2 } }}
-      onClick={() => onSelect(tool.id)}
-      style={{ cursor: 'pointer' }}
+    <a
+      href={`/${tool.id}`}
+      onClick={(e) => { e.preventDefault(); onSelect(tool.id); }}
+      style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
+      aria-label={`Open ${tool.name} tool`}
     >
-      {tool.category === 'unique' && <div className="unique-badge">✨ Unique</div>}
+      <motion.div
+        ref={ref}
+        className={`tool-card ${visible ? 'visible' : ''}`}
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={isInView ? { opacity: 1, scale: 1, y: 0 } : {}}
+        transition={{ duration: 0.4, delay: index * 0.04, ease: 'easeOut' }}
+        whileHover={{ y: -5, transition: { duration: 0.2 } }}
+        style={{ cursor: 'pointer' }}
+      >
+        {tool.category === 'unique' && <div className="unique-badge">✨ Unique</div>}
 
-      <div className="tool-card-top">
-        <div className={`tool-card-icon ${getCategoryColor(tool.category)}`}>{tool.icon}</div>
-        <button
-          className={`tool-fav-btn ${isFavorite ? 'active' : ''}`}
-          onClick={e => { e.stopPropagation(); onToggleFavorite(tool.id); }}
-          title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-          aria-label={isFavorite ? 'Remove from favorites' : 'Save to favorites'}
-        >
-          {isFavorite ? '⭐' : '☆'}
-        </button>
-      </div>
+        <div className="tool-card-top">
+          <div className={`tool-card-icon ${getCategoryColor(tool.category)}`}>{tool.icon}</div>
+          <button
+            className={`tool-fav-btn ${isFavorite ? 'active' : ''}`}
+            onClick={e => { e.stopPropagation(); onToggleFavorite(tool.id); }}
+            title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+            aria-label={isFavorite ? 'Remove from favorites' : 'Save to favorites'}
+          >
+            {isFavorite ? '⭐' : '☆'}
+          </button>
+        </div>
 
-      <h3 className="tool-card-title">{tool.name}</h3>
-      <p className="tool-card-desc">{tool.desc}</p>
+        <h3 className="tool-card-title">{tool.name}</h3>
+        <p className="tool-card-desc">{tool.desc}</p>
 
-      <div className="tool-card-footer">
-        <span className={`tool-card-tag ${tool.category}`}>{getCategoryLabel(tool.category)}</span>
-        {usageCount > 0 && <span className="tool-usage-count">{usageCount}× used</span>}
-      </div>
-    </motion.div>
+        <div className="tool-card-footer">
+          <span className={`tool-card-tag ${tool.category}`}>{getCategoryLabel(tool.category)}</span>
+          {usageCount > 0 && <span className="tool-usage-count">{usageCount}× used</span>}
+        </div>
+      </motion.div>
+    </a>
   );
 });
 

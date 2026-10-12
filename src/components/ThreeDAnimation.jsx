@@ -194,32 +194,30 @@ function MetallicRings() {
   return (
     <group ref={groupRef}>
       <mesh ref={ring1Ref} material={metalMaterial} rotation={[Math.PI / 2.2, 0, 0]}>
-        <torusGeometry args={[3.2, 0.04, 16, 100]} />
+        <torusGeometry args={[3.2, 0.04, 12, 64]} />
       </mesh>
       
       <mesh ref={ring2Ref} material={metalMaterial} rotation={[Math.PI / 1.8, 0.2, 0]}>
-        <torusGeometry args={[3.8, 0.02, 16, 100]} />
+        <torusGeometry args={[3.8, 0.02, 12, 64]} />
       </mesh>
 
       <mesh ref={ring3Ref} material={metalMaterial} rotation={[Math.PI / 2, -0.3, 0]}>
-        <torusGeometry args={[4.5, 0.06, 16, 100]} />
+        <torusGeometry args={[4.5, 0.06, 12, 64]} />
       </mesh>
     </group>
   );
 }
 
-// ── Floating Data Particles ──
-function DataParticles({ count = 150 }) {
+// ── Floating Data Particles — optimized: rotation only, no per-frame buffer mutation ──
+function DataParticles({ count = 80 }) {
   const pointsRef = useRef();
 
   const positions = useMemo(() => {
     const arr = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      // Create a cylinder/tornado distribution around the center
       const radius = 2 + Math.random() * 6;
       const angle = Math.random() * Math.PI * 2;
       const y = (Math.random() - 0.5) * 15;
-      
       arr[i * 3] = Math.cos(angle) * radius;
       arr[i * 3 + 1] = y;
       arr[i * 3 + 2] = Math.sin(angle) * radius;
@@ -229,18 +227,9 @@ function DataParticles({ count = 150 }) {
 
   useFrame((state) => {
     if (!pointsRef.current) return;
-    const t = state.clock.elapsedTime;
-    pointsRef.current.rotation.y = t * 0.05;
-    
-    // Subtle vertical floating
-    const posArray = pointsRef.current.geometry.attributes.position.array;
-    for (let i = 0; i < count; i++) {
-      posArray[i * 3 + 1] += 0.01; // Move up
-      if (posArray[i * 3 + 1] > 7.5) {
-        posArray[i * 3 + 1] = -7.5; // Wrap around
-      }
-    }
-    pointsRef.current.geometry.attributes.position.needsUpdate = true;
+    // Use only rotation — no per-frame buffer writes
+    pointsRef.current.rotation.y = state.clock.elapsedTime * 0.04;
+    pointsRef.current.rotation.x = state.clock.elapsedTime * 0.01;
   });
 
   return (
@@ -252,7 +241,7 @@ function DataParticles({ count = 150 }) {
         size={0.04}
         color="#00ffe0"
         transparent
-        opacity={0.15}
+        opacity={0.12}
         sizeAttenuation
         depthWrite={false}
         blending={THREE.AdditiveBlending}
@@ -311,8 +300,8 @@ export default function ThreeDAnimation() {
       {/* Three.js Canvas */}
       <Canvas
         camera={{ position: [0, 2, 7], fov: 45 }}
-        dpr={[1, 1.5]}
-        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+        dpr={[0.8, 1]}
+        gl={{ antialias: false, alpha: true, powerPreference: 'high-performance' }}
         style={{ background: 'transparent', pointerEvents: 'none' }}
       >
         <Scene />

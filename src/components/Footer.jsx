@@ -1,14 +1,53 @@
-import React from 'react';
 import { useApp } from '../App';
 import { TOOLS } from '../data/toolsList';
 
+// Top tools to show in footer for SEO internal linking
+const FOOTER_TOOLS = [
+  // Popular text tools
+  { id: 'base64', name: 'Base64 Encoder' },
+  { id: 'jwt-decoder', name: 'JWT Decoder' },
+  { id: 'url-encode', name: 'URL Encoder' },
+  { id: 'regex-tester', name: 'Regex Tester' },
+  { id: 'word-counter', name: 'Word Counter' },
+  { id: 'diff-checker', name: 'Diff Checker' },
+  // Popular code tools
+  { id: 'json-formatter', name: 'JSON Formatter' },
+  { id: 'js-beautifier', name: 'JS Beautifier' },
+  { id: 'css-beautifier', name: 'CSS Beautifier' },
+  { id: 'html-beautifier', name: 'HTML Beautifier' },
+  { id: 'sql-formatter', name: 'SQL Formatter' },
+  // Popular converters
+  { id: 'markdown-preview', name: 'Markdown Preview' },
+  { id: 'json-csv', name: 'JSON ↔ CSV' },
+  { id: 'color-converter', name: 'Color Converter' },
+  { id: 'timestamp', name: 'Timestamp Converter' },
+  // CSS Generators
+  { id: 'gradient', name: 'Gradient Generator' },
+  { id: 'box-shadow', name: 'Box Shadow' },
+  { id: 'glassmorphism', name: 'Glassmorphism' },
+  { id: 'flexbox', name: 'Flexbox Playground' },
+  // Image tools
+  { id: 'image-compress', name: 'Image Compressor' },
+  { id: 'qr-code', name: 'QR Code Generator' },
+  { id: 'image-resize', name: 'Image Resizer' },
+  // Security
+  { id: 'password-gen', name: 'Password Generator' },
+  { id: 'hash-gen', name: 'Hash Generator' },
+  // Unique
+  { id: 'curl-to-fetch', name: 'cURL to Fetch' },
+  { id: 'chmod-calc', name: 'Chmod Calculator' },
+  { id: 'cron-parser', name: 'Cron Parser' },
+  { id: 'http-status', name: 'HTTP Status Codes' },
+  // Calculators
+  { id: 'emi-calc', name: 'EMI Calculator' },
+  { id: 'gst-calc', name: 'GST Calculator' },
+];
 
 export default function Footer() {
   const { selectTool } = useApp();
 
   return (
     <footer className="footer-new">
-
 
       {/* ── Main grid ── */}
       <div className="footer-main">
@@ -44,7 +83,7 @@ export default function Footer() {
               </li>
               <li>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="check-icon"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                Lightning fast & instant load times
+                Lightning fast &amp; instant load times
               </li>
               <li>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="check-icon"><polyline points="20 6 9 17 4 12"></polyline></svg>
@@ -58,6 +97,23 @@ export default function Footer() {
           </div>
         </div>
 
+      </div>
+
+      {/* ── Popular Tools Links (SEO internal linking) ── */}
+      <div className="footer-tools-section">
+        <div className="footer-tools-heading">Popular Tools</div>
+        <nav className="footer-tools-grid" aria-label="Popular developer tools">
+          {FOOTER_TOOLS.map(tool => (
+            <a
+              key={tool.id}
+              href={`/${tool.id}`}
+              onClick={(e) => { e.preventDefault(); selectTool(tool.id); }}
+              className="footer-tool-link"
+            >
+              {tool.name}
+            </a>
+          ))}
+        </nav>
       </div>
 
       {/* ── Divider with tagline ── */}

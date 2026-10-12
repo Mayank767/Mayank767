@@ -11,14 +11,22 @@ const __dirname = path.dirname(__filename)
 // ─────────────────────────────────────────────────────────
 // Extract tool data from App.jsx at config-load time
 // ─────────────────────────────────────────────────────────
-const appCode = fs.readFileSync(path.resolve(__dirname, 'src/App.jsx'), 'utf-8')
+const toolsCode = fs.readFileSync(path.resolve(__dirname, 'src/data/toolsList.jsx'), 'utf-8')
 
-// Match: { id: 'xxx', name: 'Yyy', desc: 'Zzz', icon: '...', category: 'cat' ...}
-const toolRegex = /\{\s*id:\s*'([^']+)',\s*name:\s*'([^']+)',\s*desc:\s*'([^']+)',(?:[^}]*?)icon:\s*'([^']*)',\s*category:\s*'([^']+)'/g
+// Match: id, name, desc, optional seoTitle, optional seoDesc, icon, category
+const toolRegex = /\{\s*id:\s*'([^']+)',\s*name:\s*'([^']+)',\s*desc:\s*'([^']+)'(?:,\s*seoTitle:\s*'([^']*)')?(?:,\s*seoDesc:\s*'([^']*)')?(?:,[^}]*?)icon:\s*'([^']*)',\s*category:\s*'([^']+)'/g
 const tools = []
 let m
-while ((m = toolRegex.exec(appCode)) !== null) {
-  tools.push({ id: m[1], name: m[2], desc: m[3], icon: m[4], category: m[5] })
+while ((m = toolRegex.exec(toolsCode)) !== null) {
+  tools.push({
+    id: m[1],
+    name: m[2],
+    desc: m[3],
+    seoTitle: m[4] || '',
+    seoDesc: m[5] || '',
+    icon: m[6],
+    category: m[7]
+  })
 }
 
 // ─────────────────────────────────────────────────────────
@@ -67,10 +75,10 @@ function prerenderRoutes() {
         let created = 0
 
         for (const tool of tools) {
-          const title = `${tool.name} — Free Online Tool (${currentYear}) | ZeroApiTools`
+          const title = tool.seoTitle || `${tool.name} — Free Online Tool (${currentYear}) | ZeroApiTools`
           const desc = tool.desc.replace(/\.+$/, '')
           const keywords = categoryKeywords[tool.category] || ''
-          const description = `${desc}. ${keywords}. 100% free, works offline in your browser. No signup, no API, no data uploaded. ZeroApiTools.`
+          const description = tool.seoDesc || `${desc}. ${keywords}. 100% free, works offline in your browser. No signup, no API, no data uploaded. ZeroApiTools.`
           const url = `https://zeroapitools.vercel.app/${tool.id}`
 
           // ── Tool-specific JSON-LD (SoftwareApplication schema) ──
@@ -347,12 +355,25 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom')) {
-              return 'vendor';
+            if (id.includes('react-dom') || id.includes('/react/')) {
+              return 'vendor-react';
             }
             if (id.includes('marked') || id.includes('dompurify') || id.includes('js-beautify')) {
-              return 'utils';
+              return 'vendor-utils';
             }
+            if (id.includes('three') || id.includes('@react-three')) {
+              return 'vendor-three';
+            }
+            if (id.includes('framer-motion')) {
+              return 'vendor-motion';
+            }
+            if (id.includes('pdf-lib')) {
+              return 'vendor-pdf';
+            }
+            if (id.includes('qrcode')) {
+              return 'vendor-qr';
+            }
+            return 'vendor-misc';
           }
         },
       },

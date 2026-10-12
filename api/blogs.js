@@ -141,25 +141,16 @@ export default async function handler(req, res) {
 
       const blogs = response.results.map(pageToPost);
 
-      // Auto-generate excerpts for posts that don't have one
+      // NOTE: We intentionally skip fetching full page content just for excerpts
+      // in list mode — that would make N extra Notion API calls and is very slow.
+      // Excerpts should be set in the Notion "Excerpt" property directly.
       for (const blog of blogs) {
         if (!blog.excerpt) {
-          try {
-            const mdblocks = await n2m.pageToMarkdown(blog.id);
-            const mdString = n2m.toMarkdownString(mdblocks);
-            const content = mdString.parent || mdString;
-            blog.excerpt = content
-              .replace(/[#*`>\[\]!()-]/g, '')
-              .replace(/\n+/g, ' ')
-              .trim()
-              .slice(0, 200) + '...';
-          } catch {
-            blog.excerpt = 'Click to read more...';
-          }
+          blog.excerpt = 'Click to read this article on ZeroApiTools...';
         }
       }
 
-      res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+      res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=3600');
       return res.status(200).json(blogs);
     }
   } catch (error) {
